@@ -18,11 +18,16 @@ function Filters.isClothingItem (itemId)
     return RPGManager.GetItemCategory(itemId) == gamedataItemCategory.Clothing
 end
 
+function Filters.doesItemExist (tweakDBID)
+    return TweakDB:GetRecord(tweakDBID) ~= nil
+end
+
 -- condition is a function with parameters (itemId) returning a bool
 -- failureMessage is a string which can be displayed if the filter returns false
-function Filters.makeFilter (condition, failureMessage)
+function Filters.makeFilter (condition, configKey, failureMessage)
     return {
         condition = condition,
+        configKey = configKey,
         failureMessage = failureMessage
     }
 end

@@ -32,17 +32,37 @@ function Mod:runConfig (configChunk)
         self.config = nil
         return false
     end
-    setmetatable(config, {__index = function (table, key)
-        if rawget(table, key) == nil and defaultConfig[key] ~= nil then
-            rawset(table, key, Utils.copy(defaultConfig[key]))
+
+    local function makeIndexAccessFunction (defaultTable)
+        return function (table, key)
+            if rawget(table, key) == nil and defaultTable[key] ~= nil then
+                rawset(table, key, Utils.copy(defaultTable[key]))
+            end
+            return rawget(table, key)
         end
-        return rawget(table, key)
-    end})
+    end
+    setmetatable(config, {__index = makeIndexAccessFunction(defaultConfig)})
+    setmetatable(config.isFilterEnabled, {__index = makeIndexAccessFunction(defaultConfig.isFilterEnabled)})
+
     self.config = config
+
+    local configVersion = rawget(config, "version")
+    if not configVersion or configVersion < defaultConfig.version then
+        if not config.blacklistModifiedByUser then
+            self:restoreDefaultBlacklist()
+        end
+    end
+
     self:updateBlacklistSet()
     self:updateLogLevel()
+    config.version = defaultConfig.version
     self:saveConfig()
     return true
+end
+
+function Mod:restoreDefaultBlacklist ()
+    self.config.blacklist = Utils.copy(defaultConfig.blacklist)
+    self.config.blacklistModifiedByUser = false
 end
 
 function Mod:saveConfig ()
@@ -75,8 +95,8 @@ function Mod:addClothToWardrobe (itemTid)
         return false, "not valid ItemID"
     end
 
-    for filterName, filter in pairs(self.filters) do
-        if self.config.isFilterEnabled[filterName] and not filter.condition(itemId) then
+    for _, filter in ipairs(self.filters) do
+        if self.config.isFilterEnabled[filter.configKey] and not filter.condition(itemId) then
             return false, filter.failureMessage
         end
     end
@@ -159,13 +179,14 @@ function Mod:new ()
         end
 
         self.filters = {
-            mustHaveClothingCategory = Filters.makeFilter(Filters.isClothingItem, "item does not have the Clothing category"),
-            mustHaveDisplayName = Filters.makeFilter(Filters.tweakDbidToitemIdFilter(Filters.hasDisplayName), "item does not have displayName"),
-            mustHaveAppearanceName = Filters.makeFilter(Filters.tweakDbidToitemIdFilter(Filters.hasAppearanceName), "item does not have appearanceName"),
-            mustNotBeCraftingSpec = Filters.makeFilter(Filters.notFilter(Filters.tweakDbidToitemIdFilter(Filters.isCraftingSpec)), "item is a crafting spec"),
-            mustNotBeOnBlacklist = Filters.makeFilter(Filters.notFilter(Filters.tweakDbidToitemIdFilter(function (tweakDBID)
+            Filters.makeFilter(Filters.tweakDbidToitemIdFilter(Filters.doesItemExist), "mustExist", "item does not exist"),
+            Filters.makeFilter(Filters.isClothingItem, "mustHaveClothingCategory", "item does not have the Clothing category"),
+            Filters.makeFilter(Filters.tweakDbidToitemIdFilter(Filters.hasDisplayName), "mustHaveDisplayName", "item does not have displayName"),
+            Filters.makeFilter(Filters.tweakDbidToitemIdFilter(Filters.hasAppearanceName), "mustHaveAppearanceName", "item does not have appearanceName"),
+            Filters.makeFilter(Filters.notFilter(Filters.tweakDbidToitemIdFilter(Filters.isCraftingSpec)), "mustNotBeCraftingSpec", "item is a crafting spec"),
+            Filters.makeFilter(Filters.notFilter(Filters.tweakDbidToitemIdFilter(function (tweakDBID)
                 return self:isBlacklistedByMod(tweakDBID)
-            end)), "item is blacklisted by the mod")
+            end)), "mustNotBeOnBlacklist", "item is blacklisted by the mod")
         }
 
         ObserveAfter('PlayerPuppet', 'OnMakePlayerVisibleAfterSpawn', function ()
