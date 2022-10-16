@@ -14,5 +14,5 @@ return {
     },
     showUi = true,
     showAdvancedSettings = false,
-    rememberLastItems = true,
+    rememberLastAddedItems = true,
 }

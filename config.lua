@@ -1,17 +1,19 @@
 return {
-    isFilterEnabled = {
-        mustHaveDisplayName = true,
-        mustNotBeOnBlacklist = true,
-        mustHaveAppearanceName = true,
-        mustNotBeOnInternalBlacklist = true,
-        mustHaveClothingCategory = true,
-        mustNotBeCraftingSpec = true,
-    },
-    addAllClothesOnPlayerSpawn = false,
     logLevel = 1,
-    showAdvancedSettings = true,
+    lastAddedItems = "asdasd",
+    addAllClothesOnPlayerSpawn = true,
     showUi = true,
     blacklist = {
         "Items.TightJumpsuit_01_test_01",
     },
+    showAdvancedSettings = false,
+    isFilterEnabled = {
+        mustNotBeOnBlacklist = true,
+        mustHaveAppearanceName = true,
+        mustNotBeOnInternalBlacklist = true,
+        mustNotBeCraftingSpec = true,
+        mustHaveDisplayName = true,
+        mustHaveClothingCategory = true,
+    },
+    rememberLastAddedItems = true,
 }

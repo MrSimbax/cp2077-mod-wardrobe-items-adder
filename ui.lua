@@ -18,13 +18,18 @@ end
 
 function Ui:init (wardrobeItemsAdder)
     self.isVisible = false
-    self.clothesText = ""
+
+    local config = wardrobeItemsAdder.config
+    if not config.rememberLastAddedItems or not config.lastAddedItems then
+        config.lastAddedItems = ""
+    end
+    self.clothesText = config.lastAddedItems
     self.addNewBlacklistItemText = ""
 
     self.wardrobeItemsAdder = wardrobeItemsAdder
 
     self.winWidth = 355
-    self.winHeight = ImGui.GetTextLineHeight() * 30
+    self.winHeight = ImGui.GetTextLineHeight() * 31
     self.winContentWidth = self.winWidth - 16
     self.buffSize = 4 * 2^20
     return self
@@ -93,10 +98,15 @@ commands can be copy-pasted as-is.]])
             self.clothesText,
             self.buffSize,
             self.winContentWidth,
-            ImGui.GetTextLineHeight() * 11)
+            ImGui.GetTextLineHeight() * 12)
     ImGui.Spacing()
     if ImGui.Button("Add Listed Items", self.winContentWidth, ImGui.GetTextLineHeight() * 2) then
         self.wardrobeItemsAdder:addClothesToWardrobe(textToListOfClothes(self.clothesText))
+        local config = self.wardrobeItemsAdder.config
+        if config.rememberLastAddedItems then
+            config.lastAddedItems = self.clothesText
+            self.wardrobeItemsAdder:saveConfig()
+        end
     end
 end
 
@@ -132,6 +142,8 @@ function Ui:drawSettings ()
 end
 
 function Ui:drawAdvancedSettings ()
+    Ui:drawConfigCheckbox("Remember Last Added Items", self.wardrobeItemsAdder.config, "rememberLastAddedItems",
+        "Remember between game sessions the last used text input in the \"Add Specific Clothes\" section.")
     Ui:drawLogLevelCombo()
     Ui:drawSeparatorWithSpacing()
     Ui:drawFiltersCheckboxes()
