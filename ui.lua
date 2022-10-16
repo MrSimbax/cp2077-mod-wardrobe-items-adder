@@ -126,7 +126,6 @@ function Ui:drawSettings ()
 
     Ui:drawConfigCheckbox("Show Advanced Settings", config, "showAdvancedSettings")
     if config.showAdvancedSettings then
-        Ui:drawSeparatorWithSpacing()
         Ui:drawAdvancedSettings()
     end
 end
@@ -135,8 +134,6 @@ function Ui:drawAdvancedSettings ()
     Ui:drawLogLevelCombo()
     Ui:drawSeparatorWithSpacing()
     Ui:drawFiltersCheckboxes()
-    Ui:drawSeparatorWithSpacing()
-    Ui:drawHideWindowButton()
 end
 
 function Ui:drawLogLevelCombo ()
@@ -185,33 +182,6 @@ The item must not be on the wardrobe blacklist.
 The blacklist can be found in the TweakDB Editor under record
 gamedataItemList_Record.Items.WardrobeBlacklist.items
 ]])
-end
-
-function Ui:drawHideWindowButton ()
-    Ui:drawSectionDescription("Hide UI", [[
-To show this window again, you can either
-edit the config.lua file by hand inside
-the mod's directory and reload mods/restart
-the game, or use the following command
-in the console.]])
-
-    local showUiCommand = "GetMod(\"wardrobe_items_adder\"):showUi()"
-    ImGui.PushItemWidth(self.winContentWidth - 55)
-    ImGui.InputText("##showUiCommand", "GetMod(\"wardrobe_items_adder\"):showUi()",
-        #showUiCommand + 1,
-        ImGuiInputTextFlags.ReadOnly + ImGuiInputTextFlags.AutoSelectAll)
-    ImGui.PopItemWidth()
-    ImGui.SameLine()
-    if ImGui.Button("Copy") then
-        ImGui.SetClipboardText(showUiCommand)
-    end
-
-    local pressed = ImGui.Button("Hide This Window", self.winContentWidth, ImGui.GetTextLineHeightWithSpacing() + 2)
-    if pressed then
-        self.wardrobeItemsAdder.config.showUi = false
-        self.wardrobeItemsAdder:saveConfig()
-        return
-    end
 end
 
 function Ui:drawBlacklist ()
