@@ -216,13 +216,11 @@ they will still be added to the wardrobe.]])
     local blacklist = self.wardrobeItemsAdder.config.blacklist
     local bufferSizePerItem = 200
 
+    local itemToRemoveIndex = nil
     for index, oldPath in ipairs(blacklist) do
         local labelExtension = "##blacklist"..tostring(index)
         if ImGui.Button("Remove"..labelExtension) then
-            table.remove(blacklist, index)
-            self.wardrobeItemsAdder:saveConfig()
-            self.wardrobeItemsAdder:updateBlacklistSet()
-            goto continue
+            itemToRemoveIndex = index
         end
         ImGui.SameLine()
         ImGui.PushItemWidth(self.winContentWidth - 55)
@@ -232,8 +230,12 @@ they will still be added to the wardrobe.]])
             self.wardrobeItemsAdder:saveConfig()
             self.wardrobeItemsAdder:updateBlacklistSet()
         end
+    end
 
-        ::continue::
+    if itemToRemoveIndex then
+        table.remove(blacklist, itemToRemoveIndex)
+        self.wardrobeItemsAdder:saveConfig()
+        self.wardrobeItemsAdder:updateBlacklistSet()
     end
 
     local addButtonPressed = ImGui.Button(" Add  ".."##blacklist")
