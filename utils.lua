@@ -10,6 +10,10 @@ function Utils.split (str, delim)
     return t
 end
 
+function Utils.trim (str)
+    return str:find("^%s*$") and '' or str:match("^%s*(.*%S)")
+end
+
 function Utils.serialize (file, object, indent)
     indent = indent or ""
     local t = type(object)

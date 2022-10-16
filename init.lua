@@ -5,20 +5,6 @@ local Utils = require("utils")
 
 local Mod = {}
 
-local function makeTweakDbidToPathTable (paths)
-    local ids = {}
-    for path, _ in pairs(paths) do
-        local tweakDBID = TweakDBID.new(path)
-        if not TDBID.IsValid(tweakDBID) then
-            Logger:warn("invalid TweakDBID: %s", path)
-            goto continue
-        end
-        ids[TDBID.ToStringDEBUG(tweakDBID)] = path
-        ::continue::
-    end
-    return ids
-end
-
 function Mod:loadConfig ()
     local configChunk, errorMessage = loadfile("config.lua", "t", {})
     if not configChunk then
@@ -35,9 +21,8 @@ function Mod:loadConfig ()
         Logger:error("Bad configuration")
         return false
     end
-    config.tweakDbidToPathTable = makeTweakDbidToPathTable(config.blacklist)
     self.config = config
-    Logger:debug("test: %s", self.config.showAdvancedSettings)
+    self:updateBlacklistSet()
     self:saveConfig()
     return true
 end
@@ -117,13 +102,28 @@ function Mod:addAllClothesToWardrobe ()
 end
 
 function Mod:isBlacklistedByMod (tweakDBID)
-    return self.config.blacklist[self.config.tweakDbidToPathTable[TDBID.ToStringDEBUG(tweakDBID)]]
+    return self.blacklistSet[self.tweakDbidToPathTable[TDBID.ToStringDEBUG(tweakDBID)]]
 end
 
 function Mod:showUi ()
     if self.initialized then
         self.config.showUi = true
         self:saveConfig()
+    end
+end
+
+function Mod:updateBlacklistSet ()
+    self.blacklistSet = {}
+    self.tweakDbidToPathTable = {}
+    for _, path in ipairs(self.config.blacklist) do
+        local tweakDBID = TweakDBID.new(path)
+        if not TDBID.IsValid(tweakDBID) then
+            Logger:warn("path %s is not a valid TweakDBID, skipping from blacklist")
+            goto continue
+        end
+        self.blacklistSet[path] = true
+        self.tweakDbidToPathTable[TDBID.ToStringDEBUG(tweakDBID)] = path
+        ::continue::
     end
 end
 

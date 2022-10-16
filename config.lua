@@ -1,20 +1,17 @@
 return {
-    showAdvancedSettings = false,
-    logLevel = 2,
-    showUi = true,
     isFilterEnabled = {
-        mustNotBeCraftingSpec = true,
         mustHaveDisplayName = true,
-        mustNotBeOnInternalBlacklist = true,
         mustNotBeOnBlacklist = true,
         mustHaveAppearanceName = true,
+        mustNotBeOnInternalBlacklist = true,
         mustHaveClothingCategory = true,
-    },
-    tweakDbidToPathTable = {
-        ["<TDBID:FB1A237B:1E>"] = "Items.TightJumpsuit_01_test_01",
-    },
-    blacklist = {
-        ["Items.TightJumpsuit_01_test_01"] = true,
+        mustNotBeCraftingSpec = true,
     },
     addAllClothesOnPlayerSpawn = false,
+    logLevel = 1,
+    showAdvancedSettings = true,
+    showUi = true,
+    blacklist = {
+        "Items.TightJumpsuit_01_test_01",
+    },
 }

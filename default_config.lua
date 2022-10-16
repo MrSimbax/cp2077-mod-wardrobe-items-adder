@@ -1,7 +1,4 @@
 return {
-    tweakDbidToPathTable = {
-        ["<TDBID:FB1A237B:1E>"] = "Items.TightJumpsuit_01_test_01",
-    },
     blacklist = {
         ["Items.TightJumpsuit_01_test_01"] = true,
     },
@@ -16,5 +13,6 @@ return {
         mustHaveClothingCategory = true,
     },
     showUi = true,
-    showAdvancedSettings = false
+    showAdvancedSettings = false,
+    rememberLastItems = true,
 }

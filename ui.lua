@@ -19,11 +19,12 @@ end
 function Ui:init (wardrobeItemsAdder)
     self.isVisible = false
     self.clothesText = ""
+    self.addNewBlacklistItemText = ""
 
     self.wardrobeItemsAdder = wardrobeItemsAdder
 
     self.winWidth = 355
-    self.winHeight = ImGui.GetTextLineHeight() * 29
+    self.winHeight = ImGui.GetTextLineHeight() * 30
     self.winContentWidth = self.winWidth - 16
     self.buffSize = 4 * 2^20
     return self
@@ -92,7 +93,7 @@ commands can be copy-pasted as-is.]])
             self.clothesText,
             self.buffSize,
             self.winContentWidth,
-            ImGui.GetTextLineHeight() * 10)
+            ImGui.GetTextLineHeight() * 11)
     ImGui.Spacing()
     if ImGui.Button("Add Listed Items", self.winContentWidth, ImGui.GetTextLineHeight() * 2) then
         self.wardrobeItemsAdder:addClothesToWardrobe(textToListOfClothes(self.clothesText))
@@ -137,7 +138,7 @@ function Ui:drawAdvancedSettings ()
 end
 
 function Ui:drawLogLevelCombo ()
-    local items = {"All", "Default", "Only Errors And Warnings", "Only Errors", "Off"}
+    local items = {"All", "Default", "Only Errors And Warnings", "Only Errors", "None"}
     local currentIndex = Logger.logLevel
     local preview = items[currentIndex]
     if ImGui.BeginCombo("Log Level", preview) then
@@ -154,6 +155,11 @@ function Ui:drawLogLevelCombo ()
             end
         end
         ImGui.EndCombo()
+    end
+    if ImGui.IsItemHovered() then
+        ImGui.SetTooltip([[
+Reduce or increase the amount of console logs from the mod.
+]])
     end
 end
 
@@ -173,11 +179,14 @@ system can still refuse to add an item.]])
     Ui:drawConfigCheckbox("Has Appearance Name", filters,
         "mustHaveAppearanceName", "The item must have valid \"appearanceName\" field.")
     Ui:drawConfigCheckbox("Is Not Crafting Spec", filters,
-        "mustHaveAppearanceName", "The item must not have \"CraftingData\" field.")
+        "mustNotBeCraftingSpec", "The item must not have \"CraftingData\" field.")
     Ui:drawConfigCheckbox("Is Not Blacklisted", filters,
-        "mustNotBeOnBlacklist", "The item must not be blacklisted in the mod's configuration.")
-    Ui:drawConfigCheckbox("Is Not Blacklisted By Game", filters,
         "mustNotBeOnBlacklist", [[
+The item must not be blacklisted in the mod's configuration.
+The mod's blacklist can be viewed and modified in the Blacklist tab.
+]])
+    Ui:drawConfigCheckbox("Is Not Blacklisted By Game", filters,
+        "mustNotBeOnInternalBlacklist", [[
 The item must not be on the wardrobe blacklist.
 The blacklist can be found in the TweakDB Editor under record
 gamedataItemList_Record.Items.WardrobeBlacklist.items
@@ -186,7 +195,58 @@ end
 
 function Ui:drawBlacklist ()
     Ui:drawSectionDescription("Item Blacklist", [[
-Theese items will not be added.]])
+These items will not be added by the mod
+if the blacklist filter is enabled.
+This is NOT the in-game blacklist.
+If you find these items during gameplay,
+they will still be added to the wardrobe.]])
+
+    local blacklist = self.wardrobeItemsAdder.config.blacklist
+    local bufferSizePerItem = 200
+
+    for index, oldPath in ipairs(blacklist) do
+        local labelExtension = "##blacklist"..tostring(index)
+        if ImGui.Button("Remove"..labelExtension) then
+            table.remove(blacklist, index)
+            self.wardrobeItemsAdder:saveConfig()
+            self.wardrobeItemsAdder:updateBlacklistSet()
+            goto continue
+        end
+        ImGui.SameLine()
+        ImGui.PushItemWidth(self.winContentWidth - 55)
+        blacklist[index] = ImGui.InputText(labelExtension, blacklist[index], bufferSizePerItem)
+        ImGui.PopItemWidth()
+        if blacklist[index] ~= oldPath then
+            self.wardrobeItemsAdder:saveConfig()
+            self.wardrobeItemsAdder:updateBlacklistSet()
+        end
+
+        ::continue::
+    end
+
+    local addButtonPressed = ImGui.Button(" Add  ".."##blacklist")
+    ImGui.SameLine()
+    ImGui.PushItemWidth(self.winContentWidth - 55)
+    local entered = false
+    self.addNewBlacklistItemText, entered =
+        ImGui.InputText(
+            "##blacklistNewItemTextInput",
+            self.addNewBlacklistItemText,
+            bufferSizePerItem,
+            ImGuiInputTextFlags.EnterReturnsTrue)
+    if self.focusAdd then
+        ImGui.SetKeyboardFocusHere(-1)
+        self.focusAdd = false
+    end
+    local newItem = Utils.trim(self.addNewBlacklistItemText)
+    if (addButtonPressed or entered) and #newItem > 0 then
+        table.insert(blacklist, newItem)
+        self.focusAdd = true
+        self.addNewBlacklistItemText = ""
+        self.wardrobeItemsAdder:saveConfig()
+        self.wardrobeItemsAdder:updateBlacklistSet()
+    end
+    ImGui.PopItemWidth()
 end
 
 return Ui
