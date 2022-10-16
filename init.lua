@@ -2,6 +2,7 @@ local Logger = require("logger"):init(1, '[WardrobeItemsAdder] ')
 local Filters = require("filters")
 local Ui = require("ui")
 local Utils = require("utils")
+local defaultConfig = require("default_config")
 
 local Mod = {}
 
@@ -9,20 +10,37 @@ function Mod:loadConfig ()
     local configChunk, errorMessage = loadfile("config.lua", "t", {})
     if not configChunk then
         Logger:warn("Could not load configuration file: %s", errorMessage)
-        Logger:info("Trying to load the default configuration")
-        configChunk, errorMessage = loadfile("default_config.lua", "t", {})
-        if not configChunk then
-            Logger:error("Could not load the default configuration: %s", errorMessage)
-            return false
-        end
+        return Mod:loadDefaultConfig()
     end
+    return Mod:runConfig(configChunk)
+end
+
+function Mod:loadDefaultConfig ()
+    Logger:info("Loading the default configuration")
+    configChunk, errorMessage = loadfile("default_config.lua", "t", {})
+    if not configChunk then
+        Logger:error("Could not load the default configuration: %s", errorMessage)
+        return false
+    end
+    return Mod:runConfig(configChunk)
+end
+
+function Mod:runConfig (configChunk)
     local config = configChunk()
     if not config or type(config) ~= "table" then
         Logger:error("Bad configuration")
+        self.config = nil
         return false
     end
+    setmetatable(config, {__index = function (table, key)
+        if rawget(table, key) == nil and defaultConfig[key] ~= nil then
+            rawset(table, key, Utils.copy(defaultConfig[key]))
+        end
+        return rawget(table, key)
+    end})
     self.config = config
     self:updateBlacklistSet()
+    self:updateLogLevel()
     self:saveConfig()
     return true
 end
@@ -127,6 +145,10 @@ function Mod:updateBlacklistSet ()
     end
 end
 
+function Mod:updateLogLevel ()
+    Logger.logLevel = self.config.logLevel
+end
+
 function Mod:new ()
     self.initialized = false
 
@@ -135,8 +157,6 @@ function Mod:new ()
             Logger:error("Mod will not work without configuration file")
             return
         end
-
-        Logger.logLevel = self.config.logLevel
 
         self.filters = {
             mustHaveClothingCategory = Filters.makeFilter(Filters.isClothingItem, "item does not have the Clothing category"),

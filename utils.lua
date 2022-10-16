@@ -10,6 +10,21 @@ function Utils.split (str, delim)
     return t
 end
 
+-- Basic deep copy
+-- Does not handle metatables or cyclic structures
+function Utils.copy (object)
+    local objectCopy = nil
+    if type(object) == 'table' then
+        objectCopy = {}
+        for key, value in pairs(object) do
+            objectCopy[key] = Utils.copy(value)
+        end
+    else
+        objectCopy = object
+    end
+    return objectCopy
+end
+
 function Utils.trim (str)
     return str:find("^%s*$") and '' or str:match("^%s*(.*%S)")
 end

@@ -29,7 +29,7 @@ function Ui:init (wardrobeItemsAdder)
     self.wardrobeItemsAdder = wardrobeItemsAdder
 
     self.winWidth = 355
-    self.winHeight = ImGui.GetTextLineHeight() * 31
+    self.winHeight = ImGui.GetTextLineHeight() * 30
     self.winContentWidth = self.winWidth - 16
     self.buffSize = 4 * 2^20
     return self
@@ -98,7 +98,7 @@ commands can be copy-pasted as-is.]])
             self.clothesText,
             self.buffSize,
             self.winContentWidth,
-            ImGui.GetTextLineHeight() * 12)
+            ImGui.GetTextLineHeight() * 11)
     ImGui.Spacing()
     if ImGui.Button("Add Listed Items", self.winContentWidth, ImGui.GetTextLineHeight() * 2) then
         self.wardrobeItemsAdder:addClothesToWardrobe(textToListOfClothes(self.clothesText))
@@ -139,6 +139,17 @@ function Ui:drawSettings ()
     if config.showAdvancedSettings then
         Ui:drawAdvancedSettings()
     end
+
+    if ImGui.Button("Reset Settings And Data", self.winContentWidth, ImGui.GetTextLineHeight() * 2) then
+        self.wardrobeItemsAdder:loadDefaultConfig()
+    end
+    if ImGui.IsItemHovered() then
+        ImGui.SetTooltip([[
+Load the mod's default configuration.
+The mod's blacklist, last added items, and
+other persistent data will also be reset.
+]])
+    end
 end
 
 function Ui:drawAdvancedSettings ()
@@ -147,6 +158,7 @@ function Ui:drawAdvancedSettings ()
     Ui:drawLogLevelCombo()
     Ui:drawSeparatorWithSpacing()
     Ui:drawFiltersCheckboxes()
+    Ui:drawSeparatorWithSpacing()
 end
 
 function Ui:drawLogLevelCombo ()
@@ -158,8 +170,8 @@ function Ui:drawLogLevelCombo ()
             local isSelected = (currentIndex == index)
             if ImGui.Selectable(items[index], isSelected) then
                 currentIndex = index
-                Logger.logLevel = currentIndex
                 self.wardrobeItemsAdder.config.logLevel = currentIndex
+                self.wardrobeItemsAdder:updateLogLevel()
                 self.wardrobeItemsAdder:saveConfig()
             end
             if isSelected then

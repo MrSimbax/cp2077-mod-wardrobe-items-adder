@@ -1,6 +1,6 @@
 return {
     blacklist = {
-        ["Items.TightJumpsuit_01_test_01"] = true,
+        "Items.TightJumpsuit_01_test_01"
     },
     addAllClothesOnPlayerSpawn = false,
     logLevel = 2,
