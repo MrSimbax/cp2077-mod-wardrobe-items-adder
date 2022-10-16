@@ -148,8 +148,7 @@ function Mod:new ()
             end)), "item is blacklisted by the mod")
         }
 
-        Override('PlayerPuppet', 'OnMakePlayerVisibleAfterSpawn', function (player, evt, wrapped)
-            wrapped(evt)
+        ObserveAfter('PlayerPuppet', 'OnMakePlayerVisibleAfterSpawn', function ()
             if self.config.addAllClothesOnPlayerSpawn then
                 self:addAllClothesToWardrobe()
                 Logger:debug("Added all clothes to the wardrobe because of OnMakePlayerVisibleAfterSpawn event.")
