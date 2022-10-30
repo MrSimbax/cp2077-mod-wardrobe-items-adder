@@ -1,3 +1,4 @@
+-- Wardrobe Items Adder v1.2.0
 local Logger = require("logger"):init(1, '[WardrobeItemsAdder] ')
 local Filters = require("filters")
 local Ui = require("ui")
@@ -107,8 +108,13 @@ function Mod:addClothToWardrobe (itemTid)
 
     local uniqueItemId = wardrobeSystem:GetStoredItemID(itemTid)
     if ItemID.IsValid(uniqueItemId) then
-        local duplicateTid = self.duplicates[Utils.TdbidToString(uniqueItemId.id)]
-        return false, string.format("item, or its duplicate (\"%s\"), is already in the wardrobe", duplicateTid)
+        local uniqueTdbid = Utils.TdbidToString(uniqueItemId.id)
+        if not self.duplicates[uniqueTdbid] then
+            self.duplicates[uniqueTdbid] = {[Utils.TdbidToString(itemTid)] = true}
+        else
+            self.duplicates[uniqueTdbid][Utils.TdbidToString(itemTid)] =  true
+        end
+        return false, "item or its duplicate is already in the wardrobe"
     end
 
     local success = wardrobeSystem:StoreUniqueItemID(itemId)
@@ -120,7 +126,7 @@ function Mod:addClothToWardrobe (itemTid)
     WardrobeSystem.SendWardrobeAddItemRequest(itemId)
 
     uniqueItemId = wardrobeSystem:GetStoredItemID(itemTid)
-    self.duplicates[Utils.TdbidToString(uniqueItemId.id)] = Utils.TdbidToString(itemTid)
+    self.duplicates[Utils.TdbidToString(uniqueItemId.id)] = {[Utils.TdbidToString(itemTid)] = true}
 
     return true
 end
@@ -148,14 +154,20 @@ function Mod:addAllClothesToWardrobe ()
             Logger:debug("Item \"%s\" was not added to wardrobe: %s.", Utils.TdbidToString(tweakDBID), errorMessage)
         end
     end
-    -- Logger:debug("yo")
-    -- for itemId, tdbid in pairs(self.duplicates) do
-    --     Logger:debug("wut")
-    --     if itemId ~= tdbid then
-    --         Logger:debug("[\"%s\"] = %s", itemId, tdbid)
-    --     end
-    -- end
-    -- Logger:debug("excuse me")
+    self:printDuplicates()
+end
+
+function Mod:printDuplicates ()
+    for uniqueTdbid, tdbids in pairs(self.duplicates) do
+        local hasDuplicates = (next(tdbids, next(tdbids)) ~= nil)
+        if hasDuplicates then
+            local tdbidsAsStrings = {}
+            for tdbid, _ in pairs(tdbids) do
+                table.insert(tdbidsAsStrings, string.format("%q", tdbid))
+            end
+            Logger:debug("Items {%s} have the same unique item ID \"%s\".", table.concat(tdbidsAsStrings, ", "), uniqueTdbid)
+        end
+    end
 end
 
 function Mod:isBlacklistedByMod (tweakDBID)
