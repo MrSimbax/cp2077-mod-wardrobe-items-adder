@@ -71,4 +71,12 @@ function Utils.serialize (file, object, indent)
     end
 end
 
+-- Because TDBID.ToStringDEBUG() and tostring() seem unreliable and may result in a different hash than print()
+function Utils.TdbidToString (tdbid)
+    if type(tdbid) == "string" then
+        tdbid = TweakDBID.new(tdbid)
+    end
+    return string.format("<TDBID:%X:%X>", tdbid.hash, tdbid.length)
+end
+
 return Utils

@@ -1,0 +1,33 @@
+OK          | <TDBID:A3255687:18> Jacket_02_basic_01 | nil
+OK          | <TDBID:A2FE4B15:18> TShirt_11_basic_01 | nil
+BLACKLISTED | <TDBID:D1A7335C:17> ItemPass_FaceArmor | <TDBID:877D86E9:17> Visor_01_basic_01
+BLACKLISTED | <TDBID:9598DD9D:15> Cap_01_basic_01 | <TDBID:C1EC24B8:17> ItemPass_HeadArmor
+OK          | <TDBID:398D5069:1F> Underwear_Basic_01_Bottom | nil
+BLACKLISTED | <TDBID:7DB593A0:16> ItemPass_LegArmor | <TDBID:1F2A9DE9:17> Pants_01_basic_01
+OK          | <TDBID:8E9E4641:16> Shorts_03_old_01 | nil
+OK          | <TDBID:3AB907E7:11> Q001_TShirt | nil
+BLACKLISTED | <TDBID:7B57BD4B:19> q203_samurai_jacket | <TDBID:1EC93CB6:1A> SQ031_Samurai_Jacket
+OK          | <TDBID:18683849:1A> Q000_StreetKid_Shoes | nil
+OK          | <TDBID:CD397149:1A> LooseShirt_01_old_01 | nil
+OK          | <TDBID:A23EE1E6:16> Jacket_05_old_01 | nil
+BLACKLISTED | <TDBID:D30E2E42:1D> ItemPass_OuterChestArmor | <TDBID:4812ED84:18> Jacket_01_basic_01
+BLACKLISTED | <TDBID:CEACE11C:1A> MQ017_Samerai_Jacket | <TDBID:C8E2473:19> mq017_SameraiJacket
+BLACKLISTED | <TDBID:8F7B8A47:17> Shirt_01_basic_01 | <TDBID:56263DCD:1D> ItemPass_InnerChestArmor
+OK          | <TDBID:1CA405B7:15> Boots_01_old_01 | nil
+OK          | <TDBID:70DB4434:1A> Q000_StreetKid_Pants | nil
+OK          | <TDBID:398EA5C2:17> Roach_Race_Outfit | nil
+OK          | <TDBID:7B96BCB1:15> Cap_01_basic_03 | nil
+OK          | <TDBID:B3EE0D53:13> Cap_04_old_02 | nil
+OK          | <TDBID:CC508217:1B> Q000_StreetKid_TShirt | nil
+OK          | <TDBID:E213846E:15> Shirt_01_old_01 | nil
+BLACKLISTED | <TDBID:86AE453E:19> q204_samurai_jacket | <TDBID:1EC93CB6:1A> SQ031_Samurai_Jacket
+OK          | <TDBID:2078EFE1:10> Q001_Pants | nil
+OK          | <TDBID:48CB939C:10> Q001_Shoes | nil
+OK          | <TDBID:E7A63724:15> Cap_02_basic_02 | nil
+OK          | <TDBID:AA2646A7:14> Vest_10_old_01 | nil
+BLACKLISTED | <TDBID:78563E8D:1D> CasualShoes_01_basic_01 | <TDBID:FEB7D9A2:17> ItemPass_FeetArmor
+
+
+
+SQ031_Samurai_Jacket (works) == q203_samurai_jacket (doesn't work) == q204_samurai_jacket (doesn't work)
+MQ017_Samerai_Jacket (works) == mq017_SameraiJacket (works, FAKE)

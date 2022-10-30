@@ -105,11 +105,22 @@ function Mod:addClothToWardrobe (itemTid)
         return false, "item is on wardrobe system's blacklist"
     end
 
-    local success = wardrobeSystem:StoreUniqueItemIDAndMarkNew(itemId)
-
-    if not success then
-        return false, "wardrobe system refused to store new item, reason unknown (is it already in the wardrobe?)"
+    local uniqueItemId = wardrobeSystem:GetStoredItemID(itemTid)
+    if ItemID.IsValid(uniqueItemId) then
+        local duplicateTid = self.duplicates[Utils.TdbidToString(uniqueItemId.id)]
+        return false, string.format("item, or its duplicate (\"%s\"), is already in the wardrobe", duplicateTid)
     end
+
+    local success = wardrobeSystem:StoreUniqueItemID(itemId)
+    if not success then
+        return false, "storing item in the wardrobe unsuccessful, reason unknown"
+    end
+
+    -- Not sure what it does but apparently this cannot fail after successful StoreUniqueItemId()
+    WardrobeSystem.SendWardrobeAddItemRequest(itemId)
+
+    uniqueItemId = wardrobeSystem:GetStoredItemID(itemTid)
+    self.duplicates[Utils.TdbidToString(uniqueItemId.id)] = Utils.TdbidToString(itemTid)
 
     return true
 end
@@ -134,13 +145,21 @@ function Mod:addAllClothesToWardrobe ()
         local success, errorMessage = self:addClothToWardrobe(tweakDBID)
         if not success then
             -- Note: path cannot be retrieved from TDBID as it is some kind of hash
-            Logger:debug("Item \"%s\" was not added to wardrobe: %s.", TDBID.ToStringDEBUG(tweakDBID), errorMessage)
+            Logger:debug("Item \"%s\" was not added to wardrobe: %s.", Utils.TdbidToString(tweakDBID), errorMessage)
         end
     end
+    -- Logger:debug("yo")
+    -- for itemId, tdbid in pairs(self.duplicates) do
+    --     Logger:debug("wut")
+    --     if itemId ~= tdbid then
+    --         Logger:debug("[\"%s\"] = %s", itemId, tdbid)
+    --     end
+    -- end
+    -- Logger:debug("excuse me")
 end
 
 function Mod:isBlacklistedByMod (tweakDBID)
-    return self.blacklistSet[self.tweakDbidToPathTable[TDBID.ToStringDEBUG(tweakDBID)]]
+    return self.blacklistSet[self.tweakDbidToPathTable[Utils.TdbidToString(tweakDBID)]]
 end
 
 function Mod:showUi ()
@@ -160,7 +179,7 @@ function Mod:updateBlacklistSet ()
             goto continue
         end
         self.blacklistSet[path] = true
-        self.tweakDbidToPathTable[TDBID.ToStringDEBUG(tweakDBID)] = path
+        self.tweakDbidToPathTable[Utils.TdbidToString(tweakDBID)] = path
         ::continue::
     end
 end
@@ -171,6 +190,7 @@ end
 
 function Mod:new ()
     self.initialized = false
+    self.duplicates = {}
 
     registerForEvent("onInit", function ()
         if not Mod:loadConfig() then
