@@ -29,9 +29,9 @@ function Ui:init (wardrobeItemsAdder)
     self.wardrobeItemsAdder = wardrobeItemsAdder
 
     self.winWidth = 355
-    self.winHeight = ImGui.GetTextLineHeight() * 30
-    self.winContentWidth = self.winWidth - 16
+    self.winContentWidth = self.winWidth - 32
     self.buffSize = 4 * 2^20
+
     return self
 end
 
@@ -53,6 +53,9 @@ function Ui:onDraw ()
     if not self.isVisible then
         return
     end
+
+    -- ImGui methods cannot be called from outside onDraw, like in Ui:init
+    self.winHeight = ImGui.GetTextLineHeight() * 26
 
     ImGui.SetNextWindowSize(self.winWidth, self.winHeight)
     if ImGui.Begin("Wardrobe Items Adder", ImGuiWindowFlags.NoResize) then
@@ -79,7 +82,7 @@ end
 
 function Ui:drawMainTab ()
     ImGui.TextColored(1, 0, 0, 1, "Warning: items cannot be removed from wardrobe.")
-    if ImGui.Button("Add All Clothes", self.winContentWidth, ImGui.GetTextLineHeight() * 3) then
+    if ImGui.Button("Add All Clothes", self.winContentWidth, 0) then
         self.wardrobeItemsAdder:addAllClothesToWardrobe()
         Logger:info("Added all clothes to wardrobe.")
     end
@@ -100,7 +103,7 @@ commands can be copy-pasted as-is.]])
             self.winContentWidth,
             ImGui.GetTextLineHeight() * 11)
     ImGui.Spacing()
-    if ImGui.Button("Add Listed Items", self.winContentWidth, ImGui.GetTextLineHeight() * 2) then
+    if ImGui.Button("Add Listed Items", self.winContentWidth, 0) then
         self.wardrobeItemsAdder:addClothesToWardrobe(textToListOfClothes(self.clothesText))
         local config = self.wardrobeItemsAdder.config
         if config.rememberLastAddedItems then
@@ -140,7 +143,7 @@ function Ui:drawSettings ()
         Ui:drawAdvancedSettings()
     end
 
-    if ImGui.Button("Reset Settings And Data", self.winContentWidth, ImGui.GetTextLineHeight() * 2) then
+    if ImGui.Button("Reset Settings And Data", self.winContentWidth, 0) then
         self.wardrobeItemsAdder:loadDefaultConfig()
     end
     if ImGui.IsItemHovered() then
@@ -230,17 +233,19 @@ they will still be added to the wardrobe.]])
     local blacklist = self.wardrobeItemsAdder.config.blacklist
     local editable = self.wardrobeItemsAdder.config.blacklistModifiedByUser
     local bufferSizePerItem = 200
+    local addRemoveButtonsSize = 64
+    local spacingWidth = 8
 
     local itemToRemoveIndex = nil
     for index, oldPath in ipairs(blacklist) do
         local labelExtension = "##blacklist"..tostring(index)
         if editable then
-            if ImGui.Button("Remove"..labelExtension) then
+            if ImGui.Button("Remove"..labelExtension, addRemoveButtonsSize, 0) then
                 itemToRemoveIndex = index
             end
             ImGui.SameLine()
         end
-        ImGui.PushItemWidth(self.winContentWidth - (editable and 58 or 0))
+        ImGui.PushItemWidth(self.winContentWidth - (editable and (addRemoveButtonsSize + spacingWidth) or 0))
         blacklist[index] = ImGui.InputText(labelExtension, blacklist[index], bufferSizePerItem,
             editable and ImGuiInputTextFlags.None or ImGuiInputTextFlags.ReadOnly)
         ImGui.PopItemWidth()
@@ -257,9 +262,9 @@ they will still be added to the wardrobe.]])
     end
 
     if editable then
-        local addButtonPressed = ImGui.Button(" Add  ".."##blacklist")
+        local addButtonPressed = ImGui.Button(" Add  ".."##blacklist", addRemoveButtonsSize, 0)
         ImGui.SameLine()
-        ImGui.PushItemWidth(self.winContentWidth - 58)
+        ImGui.PushItemWidth(self.winContentWidth - addRemoveButtonsSize - spacingWidth)
         local entered = false
         self.addNewBlacklistItemText, entered =
             ImGui.InputText(
@@ -283,13 +288,13 @@ they will still be added to the wardrobe.]])
     end
 
     if editable then
-        if ImGui.Button("Restore Default Blacklist", self.winContentWidth, ImGui.GetTextLineHeight() * 2) then
+        if ImGui.Button("Restore Default Blacklist", self.winContentWidth, 0) then
             self.wardrobeItemsAdder:restoreDefaultBlacklist()
             self.wardrobeItemsAdder:saveConfig()
             self.wardrobeItemsAdder:updateBlacklistSet()
         end
     else
-        if ImGui.Button("Edit Blacklist", self.winContentWidth, ImGui.GetTextLineHeight() * 2) then
+        if ImGui.Button("Edit Blacklist", self.winContentWidth, 0) then
             self.wardrobeItemsAdder.config.blacklistModifiedByUser = true
             self.wardrobeItemsAdder:saveConfig()
         end
