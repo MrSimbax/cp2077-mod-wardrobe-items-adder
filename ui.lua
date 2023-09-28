@@ -49,13 +49,24 @@ function Ui:drawSeparatorWithSpacing()
     ImGui.Spacing()
 end
 
+function Ui:updateWindowSize()
+    -- The window content has about ~40 characters width
+    -- Assume window width of ~50 characters for safety
+    -- Note: variable character widths might still screw this up, but hopefully this is a good enough estimation
+    self.winWidth = ImGui.CalcTextSize(string.rep("X", 50))
+    Logger:debug(self.winWidth)
+    self.winContentWidth = self.winWidth - ImGui.CalcTextSize(string.rep("X", 4))
+
+    self.winHeight = ImGui.GetTextLineHeight() * 26
+end
+
 function Ui:onDraw ()
     if not self.isVisible then
         return
     end
 
     -- ImGui methods cannot be called from outside onDraw, like in Ui:init
-    self.winHeight = ImGui.GetTextLineHeight() * 26
+    Ui:updateWindowSize()
 
     ImGui.SetNextWindowSize(self.winWidth, self.winHeight)
     if ImGui.Begin("Wardrobe Items Adder", ImGuiWindowFlags.NoResize) then
