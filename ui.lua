@@ -3,6 +3,16 @@ local Logger = require("logger")
 
 local Ui = {}
 
+local INFINITY = 2^15
+
+local function red ()
+    return 1, 0, 0, 1
+end
+
+local function gray ()
+    return 0.5, 0.5, 0.5, 1.0
+end
+
 -- Parses the list of clothes from the user, converts the multiline string into a list of TweakDB paths
 local function textToListOfClothes (clothes)
     clothes = Utils.split(clothes, "\r\n")
@@ -50,14 +60,22 @@ function Ui:drawSeparatorWithSpacing()
 end
 
 function Ui:updateWindowSize()
-    -- The window content has about ~40 characters width
-    -- Assume window width of ~50 characters for safety
-    -- Note: variable character widths might still screw this up, but hopefully this is a good enough estimation
-    self.winWidth = ImGui.CalcTextSize(string.rep("X", 50))
-    Logger:debug(self.winWidth)
-    self.winContentWidth = self.winWidth - ImGui.CalcTextSize(string.rep("X", 4))
+    self.winWidth, self.winHeight = ImGui.GetWindowSize()
+    self.winContentWidth = self.winWidth - Ui:textWidth(4)
+end
 
-    self.winHeight = ImGui.GetTextLineHeight() * 26
+function Ui:textWidth(charCount)
+    return ImGui.CalcTextSize(string.rep("X", charCount))
+end
+
+function Ui:setWindowSize()
+    local defaultWidth = Ui:textWidth(45)
+    local defaultHeight = ImGui.GetTextLineHeight() * 26
+    ImGui.SetNextWindowSize(defaultWidth, defaultHeight, ImGuiCond_FirstUseEver)
+
+    local minWidth = Ui:textWidth(35)
+    local minHeight = ImGui.GetTextLineHeight() * 20
+    ImGui.SetNextWindowSizeConstraints(minWidth, minHeight, INFINITY, INFINITY)
 end
 
 function Ui:onDraw ()
@@ -66,10 +84,10 @@ function Ui:onDraw ()
     end
 
     -- ImGui methods cannot be called from outside onDraw, like in Ui:init
-    Ui:updateWindowSize()
+    Ui:setWindowSize()
 
-    ImGui.SetNextWindowSize(self.winWidth, self.winHeight)
-    if ImGui.Begin("Wardrobe Items Adder", ImGuiWindowFlags.NoResize) then
+    if ImGui.Begin("Wardrobe Items Adder") then
+        Ui:updateWindowSize()
         if ImGui.BeginTabBar("##tabBar") then
             if ImGui.BeginTabItem("Adder") then
                 Ui:drawMainTab()
@@ -91,8 +109,14 @@ function Ui:onDraw ()
     ImGui.End()
 end
 
+function Ui:drawRemovalWarning ()
+    ImGui.PushStyleColor(ImGuiCol.Text, red())
+    ImGui.TextWrapped("Warning: items cannot be removed from wardrobe.")
+    ImGui.PopStyleColor()
+end
+
 function Ui:drawMainTab ()
-    ImGui.TextColored(1, 0, 0, 1, "Warning: items cannot be removed from wardrobe.")
+    Ui:drawRemovalWarning()
     if ImGui.Button("Add All Clothes", self.winContentWidth, 0) then
         self.wardrobeItemsAdder:addAllClothesToWardrobe()
         Logger:info("Added all clothes to wardrobe.")
@@ -100,19 +124,22 @@ function Ui:drawMainTab ()
 
     Ui:drawSeparatorWithSpacing()
 
-    Ui:drawSectionDescription("Add Specific Clothes", [[
-Each line should contain at most one item ID,
-with or without the "Items." prefix.
-For convenience, Game.AddToInventory(...)
-commands can be copy-pasted as-is.]])
+    Ui:drawSectionDescription("Add Specific Clothes",
+"Each line should contain at most one item ID, "..
+"with or without the \"Items.\" prefix. "..
+"For convenience, Game.AddToInventory(...) "..
+"commands can be copy-pasted as-is.")
 
+    local _, availableHeight = ImGui.GetContentRegionAvail()
+    local buttonSize = ImGui.GetTextLineHeight() * 2
+    local clothesTextHeight = availableHeight - buttonSize
     self.clothesText =
         ImGui.InputTextMultiline(
             "##specificClothesInput",
             self.clothesText,
             self.buffSize,
             self.winContentWidth,
-            ImGui.GetTextLineHeight() * 11)
+            clothesTextHeight)
     ImGui.Spacing()
     if ImGui.Button("Add Listed Items", self.winContentWidth, 0) then
         self.wardrobeItemsAdder:addClothesToWardrobe(textToListOfClothes(self.clothesText))
@@ -137,14 +164,16 @@ end
 
 function Ui:drawSectionDescription (title, description)
     ImGui.Text(title)
-    ImGui.TextColored(0.5, 0.5, 0.5, 1.0, description)
+    ImGui.PushStyleColor(ImGuiCol.Text, gray())
+    ImGui.TextWrapped(description)
+    ImGui.PopStyleColor()
     ImGui.Spacing()
 end
 
 function Ui:drawSettings ()
     local config = self.wardrobeItemsAdder.config
 
-    ImGui.TextColored(1, 0, 0, 1, "Warning: items cannot be removed from wardrobe.")
+    Ui:drawRemovalWarning()
 
     Ui:drawConfigCheckbox("Add All Clothes On Spawn", config, "addAllClothesOnPlayerSpawn",
         "Automatically add all clothes to the wardrobe after the player spawns.")
@@ -202,12 +231,12 @@ Reduce or increase the amount of console logs from the mod.
 end
 
 function Ui:drawFiltersCheckboxes ()
-    Ui:drawSectionDescription("Item Filters", [[
-The mod by default filters out items which
-appear to be broken or not intended to be
-in wardrobe. You can enable or disable
-filters below. However, the game's wardrobe
-system can still refuse to add an item.]])
+    Ui:drawSectionDescription("Item Filters",
+"The mod by default filters out items which "..
+"appear to be broken or not intended to be "..
+"in wardrobe. You can enable or disable "..
+"filters below. However, the game's wardrobe "..
+"system can still refuse to add an item.")
 
     local filters = self.wardrobeItemsAdder.config.isFilterEnabled
     Ui:drawConfigCheckbox("Exists In Database", filters,
@@ -234,12 +263,12 @@ gamedataItemList_Record.Items.WardrobeBlacklist.items
 end
 
 function Ui:drawBlacklist ()
-    Ui:drawSectionDescription("Item Blacklist", [[
-These items will not be added by the mod
-if the blacklist filter is enabled.
-This is NOT the in-game blacklist.
-If you find these items during gameplay,
-they will still be added to the wardrobe.]])
+    Ui:drawSectionDescription("Item Blacklist",
+"These items will not be added by the mod "..
+"if the blacklist filter is enabled. "..
+"This is NOT the in-game blacklist. "..
+"If you find these items during gameplay, "..
+"they will still be added to the wardrobe.")
 
     local blacklist = self.wardrobeItemsAdder.config.blacklist
     local editable = self.wardrobeItemsAdder.config.blacklistModifiedByUser
