@@ -5,7 +5,7 @@ package_name="wardrobe_items_adder_v${version}"
 package_path="${package_name}/${path}"
 cd ..
 mkdir -p "${package_path}"
-cd ${current}
+cd "${current}"
 find . -iname '*.lua' -type f -exec cp --parents {} "../${package_path}" \;
 cd "../${package_name}"
 rm "${path}/config.lua"
