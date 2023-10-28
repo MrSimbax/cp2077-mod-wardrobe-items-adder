@@ -287,8 +287,8 @@ function Ui:drawBlacklist ()
     local blacklist = self.wardrobeItemsAdder.config.blacklist
     local editable = self.wardrobeItemsAdder.config.blacklistModifiedByUser
     local bufferSizePerItem = 200
-    local addRemoveButtonsSize = 64
-    local spacingWidth = 8
+    local addRemoveButtonsSize = Ui:textWidth(8)
+    local spacingWidth = Ui:textWidth(1)
 
     local itemToRemoveIndex = nil
     for index, oldPath in ipairs(blacklist) do
