@@ -209,12 +209,13 @@ function Mod:new ()
         end
 
         self.filters = {
-            Filters.makeFilter(Filters.tweakDbidToitemIdFilter(Filters.doesItemExist), "mustExist", "item does not exist"),
+            Filters.makeFilter(Filters.tweakDbidToItemIdFilter(Filters.doesItemExist), "mustExist", "item does not exist"),
             Filters.makeFilter(Filters.isClothingItem, "mustHaveClothingCategory", "item does not have the Clothing category"),
-            Filters.makeFilter(Filters.tweakDbidToitemIdFilter(Filters.hasDisplayName), "mustHaveDisplayName", "item does not have displayName"),
-            Filters.makeFilter(Filters.tweakDbidToitemIdFilter(Filters.hasAppearanceName), "mustHaveAppearanceName", "item does not have appearanceName"),
-            Filters.makeFilter(Filters.notFilter(Filters.tweakDbidToitemIdFilter(Filters.isCraftingSpec)), "mustNotBeCraftingSpec", "item is a crafting spec"),
-            Filters.makeFilter(Filters.notFilter(Filters.tweakDbidToitemIdFilter(function (tweakDBID)
+            Filters.makeFilter(Filters.tweakDbidToItemIdFilter(Filters.hasDisplayName), "mustHaveDisplayName", "item does not have displayName"),
+            Filters.makeFilter(Filters.tweakDbidToItemIdFilter(Filters.hasAppearanceName), "mustHaveAppearanceName", "item does not have appearanceName"),
+            Filters.makeFilter(Filters.notFilter(Filters.tweakDbidToItemIdFilter(Filters.isCraftingSpec)), "mustNotBeCraftingSpec", "item is/was probably a crafting spec"),
+            Filters.makeFilter(Filters.notFilter(Filters.tweakDbidToItemIdFilter(Filters.isLifepathDuplicate)), "mustNotBeLifepathDuplicate", "item is probably a duplicate of a lifepath item"),
+            Filters.makeFilter(Filters.notFilter(Filters.tweakDbidToItemIdFilter(function (tweakDBID)
                 return self:isBlacklistedByMod(tweakDBID)
             end)), "mustNotBeOnBlacklist", "item is blacklisted by the mod")
         }

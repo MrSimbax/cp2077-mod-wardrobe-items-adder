@@ -248,7 +248,21 @@ function Ui:drawFiltersCheckboxes ()
     Ui:drawConfigCheckbox("Has Appearance Name", filters,
         "mustHaveAppearanceName", "The item must have valid \"appearanceName\" field.")
     Ui:drawConfigCheckbox("Is Not Crafting Spec", filters,
-        "mustNotBeCraftingSpec", "The item must not have \"CraftingData\" field.")
+        "mustNotBeCraftingSpec", [[
+The item must not have "CraftingData" field,
+or ID indicating it is/was a crafting spec in previous versions of the game, that is
+ID must not end with _Crafting, _Legendary, _Epic, or _Crafted,
+and must not start with VHard_, Hard_, Normal_, Story_, Weak_, Avg_, or Str_.
+]])
+    Ui:drawConfigCheckbox("Is Not Lifepath Item Duplicate", filters,
+        "mustNotBeLifepathDuplicate", [[
+The item ID must not start with a pattern similar to "Q301_Corpo_WA_",
+as it's probably a duplicate of a normal item.
+The reason is that it seems some lifepath-specific clothes have three versions:
+the normal item, lifepath item for male V, and lifepath item for female V.
+This filters out the lifepath versions, which have the same appearance as the normal item,
+although they might differ in name/description.
+]])
     Ui:drawConfigCheckbox("Is Not Blacklisted", filters,
         "mustNotBeOnBlacklist", [[
 The item must not be blacklisted in the mod's configuration.
