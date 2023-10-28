@@ -76,6 +76,13 @@ function Utils.TdbidToString (tdbid)
     if type(tdbid) == "string" then
         tdbid = TweakDBID.new(tdbid)
     end
+    return tdbid.value
+end
+
+function Utils.TdbidToDebugString (tdbid)
+    if type(tdbid) == "string" then
+        tdbid = TweakDBID.new(tdbid)
+    end
     return string.format("<TDBID:%X:%X>", tdbid.hash, tdbid.length)
 end
 

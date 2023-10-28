@@ -114,7 +114,7 @@ function Mod:addClothToWardrobe (itemTid)
         else
             self.duplicates[uniqueTdbid][Utils.TdbidToString(itemTid)] =  true
         end
-        return false, "item or its duplicate is already in the wardrobe"
+        return false, string.format("item or its duplicate (\"%s\") is already in the wardrobe", Utils.TdbidToString(uniqueTdbid))
     end
 
     local success = wardrobeSystem:StoreUniqueItemID(itemId)
@@ -138,7 +138,7 @@ function Mod:addClothesToWardrobe (clothes)
         local tweakDBID = TweakDBID.new(path)
         local success, errorMessage = self:addClothToWardrobe(tweakDBID)
         if not success then
-            Logger:warn("Item \"%s\" was not added to wardrobe: %s.", path, errorMessage)
+            Logger:warn("Item \"%s\" was not added to the wardrobe: %s.", path, errorMessage)
         end
     end
 end
@@ -171,7 +171,7 @@ function Mod:printDuplicates ()
 end
 
 function Mod:isBlacklistedByMod (tweakDBID)
-    return self.blacklistSet[self.tweakDbidToPathTable[Utils.TdbidToString(tweakDBID)]]
+    return self.blacklistSet[Utils.TdbidToString(tweakDBID)]
 end
 
 function Mod:showUi ()
@@ -183,7 +183,6 @@ end
 
 function Mod:updateBlacklistSet ()
     self.blacklistSet = {}
-    self.tweakDbidToPathTable = {}
     for _, path in ipairs(self.config.blacklist) do
         local tweakDBID = TweakDBID.new(path)
         if not TDBID.IsValid(tweakDBID) then
@@ -191,7 +190,6 @@ function Mod:updateBlacklistSet ()
             goto continue
         end
         self.blacklistSet[path] = true
-        self.tweakDbidToPathTable[Utils.TdbidToString(tweakDBID)] = path
         ::continue::
     end
 end
