@@ -157,6 +157,20 @@ function Mod:addAllClothesToWardrobe ()
     self:printDuplicates()
 end
 
+-- Remove all clothing items which are stored in the wardrobe system
+function Mod:removeAllClothesFromWardrobe ()
+    local wardrobeSystem = Game.GetWardrobeSystem()
+    if not wardrobeSystem then
+        return false, "wardrobe system is unavailable"
+    end
+
+    local itemIds = wardrobeSystem:GetStoredItemIDs()
+     for _,itemId in pairs(itemIds) do
+        wardrobeSystem:ForgetItemID(itemId)
+    end
+    Logger:debug("Removed all clothes from wardrobe system.")
+end
+
 function Mod:printDuplicates ()
     for uniqueTdbid, tdbids in pairs(self.duplicates) do
         local hasDuplicates = (next(tdbids, next(tdbids)) ~= nil)
