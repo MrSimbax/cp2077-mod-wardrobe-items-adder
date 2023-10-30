@@ -157,6 +157,20 @@ function Mod:addAllClothesToWardrobe ()
     self:printDuplicates()
 end
 
+-- Remove all clothing items which are stored in the wardrobe system
+function Mod:removeAllClothesFromWardrobe ()
+    local wardrobeSystem = Game.GetWardrobeSystem()
+    if not wardrobeSystem then
+        return false, "wardrobe system is unavailable"
+    end
+
+    local itemIds = wardrobeSystem:GetStoredItemIDs()
+     for _,itemId in pairs(itemIds) do
+        wardrobeSystem:ForgetItemID(itemId)
+    end
+    Logger:debug("Removed all clothes from wardrobe system.")
+end
+
 function Mod:printDuplicates ()
     for uniqueTdbid, tdbids in pairs(self.duplicates) do
         local hasDuplicates = (next(tdbids, next(tdbids)) ~= nil)
@@ -219,6 +233,19 @@ function Mod:new ()
                 return self:isBlacklistedByMod(tweakDBID)
             end)), "mustNotBeOnBlacklist", "item is blacklisted by the mod")
         }
+
+        Override('WardrobeSystem','GetFilteredInventoryItemsData', function(self, equipmentArea)
+            local result = {}
+
+            local inventoryManager = InventoryDataManagerV2:new();
+            inventoryManager:Initialize(Game.GetPlayer());
+
+            local itemIds = self:GetFilteredStoredItemIDs(equipmentArea)
+            for _,itemId in pairs(itemIds) do
+                table.insert(result,inventoryManager:GetInventoryItemDataFromItemID(itemId))
+            end
+            return result
+        end)
 
         ObserveAfter('PlayerPuppet', 'OnMakePlayerVisibleAfterSpawn', function ()
             if self.config.addAllClothesOnPlayerSpawn then

@@ -109,18 +109,17 @@ function Ui:onDraw ()
     ImGui.End()
 end
 
-function Ui:drawRemovalWarning ()
-    ImGui.PushStyleColor(ImGuiCol.Text, red())
-    ImGui.TextWrapped("Warning: items cannot be removed from wardrobe.")
-    ImGui.PopStyleColor()
-end
-
 function Ui:drawMainTab ()
-    Ui:drawRemovalWarning()
     if ImGui.Button("Add All Clothes", self.winContentWidth, 0) then
         self.wardrobeItemsAdder:addAllClothesToWardrobe()
         Logger:info("Added all clothes to wardrobe.")
     end
+    
+    if ImGui.Button("Remove All Clothes", self.winContentWidth, 0) then
+        self.wardrobeItemsAdder:removeAllClothesFromWardrobe()
+        Logger:info("Removed all clothes from wardrobe.")
+    end
+
 
     Ui:drawSeparatorWithSpacing()
 
@@ -172,8 +171,6 @@ end
 
 function Ui:drawSettings ()
     local config = self.wardrobeItemsAdder.config
-
-    Ui:drawRemovalWarning()
 
     Ui:drawConfigCheckbox("Add All Clothes On Spawn", config, "addAllClothesOnPlayerSpawn",
         "Automatically add all clothes to the wardrobe after the player spawns.")
