@@ -241,9 +241,8 @@ function Mod:new ()
             inventoryManager:Initialize(Game.GetPlayer());
 
             local itemIds = self:GetFilteredStoredItemIDs(equipmentArea)
-            for k,itemId in pairs(itemIds) do
-                local invItemData = inventoryManager:GetInventoryItemDataFromItemID(itemId)
-                table.insert(result,invItemData)
+            for _,itemId in pairs(itemIds) do
+                table.insert(result,inventoryManager:GetInventoryItemDataFromItemID(itemId))
             end
             return result
         end)
