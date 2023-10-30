@@ -234,6 +234,20 @@ function Mod:new ()
             end)), "mustNotBeOnBlacklist", "item is blacklisted by the mod")
         }
 
+        Override('WardrobeSystem','GetFilteredInventoryItemsData', function(self, equipmentArea)
+            local result = {}
+
+            local inventoryManager = InventoryDataManagerV2:new();
+            inventoryManager:Initialize(Game.GetPlayer());
+
+            local itemIds = self:GetFilteredStoredItemIDs(equipmentArea)
+            for k,itemId in pairs(itemIds) do
+                local invItemData = inventoryManager:GetInventoryItemDataFromItemID(itemId)
+                table.insert(result,invItemData)
+            end
+            return result
+        end)
+
         ObserveAfter('PlayerPuppet', 'OnMakePlayerVisibleAfterSpawn', function ()
             if self.config.addAllClothesOnPlayerSpawn then
                 self:addAllClothesToWardrobe()
