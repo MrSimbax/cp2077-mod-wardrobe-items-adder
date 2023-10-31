@@ -212,12 +212,21 @@ function Mod:updateLogLevel ()
     Logger.logLevel = self.config.logLevel
 end
 
+function Mod:isItemRemovalEnabled ()
+    if self.canForgetItems == nil then
+        local wardrobeSystem = Game.GetWardrobeSystem()
+        self.canForgetItems = (wardrobeSystem and wardrobeSystem.ForgetItemID ~= nil)
+    end
+    return self.canForgetItems
+end
+
 function Mod:new ()
     self.initialized = false
     self.duplicates = {}
+    self.canForgetItems = nil
 
     registerForEvent("onInit", function ()
-        if not Mod:loadConfig() then
+        if not self:loadConfig() then
             Logger:error("Mod will not work without configuration file")
             return
         end
@@ -234,18 +243,20 @@ function Mod:new ()
             end)), "mustNotBeOnBlacklist", "item is blacklisted by the mod")
         }
 
-        Override('WardrobeSystem','GetFilteredInventoryItemsData', function(self, equipmentArea)
-            local result = {}
+        if self:isItemRemovalEnabled() then
+            Override('WardrobeSystem','GetFilteredInventoryItemsData', function(wardrobeSystem, equipmentArea)
+                local result = {}
 
-            local inventoryManager = InventoryDataManagerV2:new();
-            inventoryManager:Initialize(Game.GetPlayer());
+                local inventoryManager = InventoryDataManagerV2:new();
+                inventoryManager:Initialize(Game.GetPlayer());
 
-            local itemIds = self:GetFilteredStoredItemIDs(equipmentArea)
-            for _,itemId in pairs(itemIds) do
-                table.insert(result,inventoryManager:GetInventoryItemDataFromItemID(itemId))
-            end
-            return result
-        end)
+                local itemIds = wardrobeSystem:GetFilteredStoredItemIDs(equipmentArea)
+                for _,itemId in pairs(itemIds) do
+                    table.insert(result,inventoryManager:GetInventoryItemDataFromItemID(itemId))
+                end
+                return result
+            end)
+        end
 
         ObserveAfter('PlayerPuppet', 'OnMakePlayerVisibleAfterSpawn', function ()
             if self.config.addAllClothesOnPlayerSpawn then

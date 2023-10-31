@@ -114,12 +114,17 @@ function Ui:drawMainTab ()
         self.wardrobeItemsAdder:addAllClothesToWardrobe()
         Logger:info("Added all clothes to wardrobe.")
     end
-    
+
+    local isItemRemovalDisabled = not self.wardrobeItemsAdder:isItemRemovalEnabled()
+    ImGui.BeginDisabled(isItemRemovalDisabled)
     if ImGui.Button("Remove All Clothes", self.winContentWidth, 0) then
         self.wardrobeItemsAdder:removeAllClothesFromWardrobe()
         Logger:info("Removed all clothes from wardrobe.")
     end
-
+    if isItemRemovalDisabled and ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled) then
+        ImGui.SetTooltip("\"Codeware\" mod must be installed to enable item removal.")
+    end
+    ImGui.EndDisabled()
 
     Ui:drawSeparatorWithSpacing()
 
