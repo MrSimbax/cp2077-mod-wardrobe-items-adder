@@ -14,25 +14,25 @@ end
 
 function Logger:debug (fmtstr, ...)
     if self.logLevel <= self.LogLevel.DEBUG then
-        printf(self.prefix.."DEBUG: "..fmtstr, ...)
+        printf(self.prefix.."[DEBUG] "..fmtstr, ...)
     end
 end
 
 function Logger:info (fmtstr, ...)
     if self.logLevel <= self.LogLevel.INFO then
-        printf(self.prefix..fmtstr, ...)
+        printf(self.prefix.."[INFO] "..fmtstr, ...)
     end
 end
 
 function Logger:warn (fmtstr, ...)
     if self.logLevel <= self.LogLevel.WARN then
-        printf(self.prefix.."WARNING: "..fmtstr, ...)
+        printf(self.prefix.."[WARN] "..fmtstr, ...)
     end
 end
 
 function Logger:error (fmtstr, ...)
     if self.logLevel <= self.LogLevel.ERROR then
-        printf(self.prefix.."ERROR: "..fmtstr, ...)
+        printf(self.prefix.."[ERROR] "..fmtstr, ...)
     end
 end
 

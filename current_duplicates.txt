@@ -1,0 +1,185 @@
+Items {Items.Shirt_02_basic_01, Items.Hard_30_IntBody_InnerToso} have the same appearanceName "t1_shirt_02_basic_01_".
+Items {Items.Mask_02_basic_01, Items.Proficiency_Mask_02_basic_01_Crafting} have the same appearanceName "f1_mask_02_basic_01_".
+Items {Items.Shorts_02_basic_02, Items.Shorts_02_basic_02_Crafting} have the same appearanceName "l1_shorts_02_basic_02_".
+Items {Items.FormalPants_01_basic_02, Items.Q301_Corpo_MA_Pants} have the same appearanceName "l1_formal_01_basic_02_".
+Items {Items.CasualShoes_05_basic_03_Crafting, Items.CasualShoes_05_basic_03} have the same appearanceName "s1_casual_05_basic_03_".
+Items {Items.FormalShoes_02_rich_03, Items.Proficiency_FormalShoes_02_rich_03_Crafting} have the same appearanceName "s1_formal_02_rich_03_".
+Items {Items.VHard_50_RefBody_Face, Items.Visor_02_basic_01, Items.Hard_30_Reflex_Face} have the same appearanceName "f1_glasses_06_basic_01_".
+Items {Items.Proficiency_Shirt_02_basic_02_Crafting, Items.Shirt_02_basic_02} have the same appearanceName "t1_shirt_02_basic_02_".
+Items {Items.Vest_20_rich_01_Crafting, Items.Vest_20_rich_01} have the same appearanceName "t2_vest_20_rich_01_".
+Items {Items.Tech_01_basic_01, Items.Tech_01_basic_01_Crafting} have the same appearanceName "f1_tech_01_basic_01_".
+Items {Items.Normal_20_Netrunner_Head, Items.Weak_30_Head, Items.Story_5_Head, Items.Weak_10_Head, Items.Cap_01_basic_01, Items.Hard_20_Reflex_Head, TEST.ItemPass_HeadArmor} have the same appearanceName "h1_cap_01_basic_01_".
+Items {Items.Normal_20_Ranged_Head, Items.Cap_02_basic_02} have the same appearanceName "h1_cap_02_basic_02_".
+Items {Items.VHard_50_TechCool_InnerToso, Items.Shirt_01_old_01} have the same appearanceName "t1_shirt_01_old_01_".
+Items {Items.CasualShoes_01_basic_02, Items.Normal_20_Melee_Feet} have the same appearanceName "s1_casual_01_basic_02_".
+Items {Items.SQ030_MaxTac_Helmet, Items.q301_kurts_militia_helmet, Items.q301_fia_helmet} have the same appearanceName "h1_helmet_05_sq030_max_tac_".
+Items {Items.Hat_01_rich_01, Items.Proficiency_Hat_01_rich_01_Crafting} have the same appearanceName "h1_hat_01_rich_01_".
+Items {Items.Boots_06_old_02, Items.Normal_20_Ranged_Feet, Items.Weak_20_Cool_Feet} have the same appearanceName "s1_boots_06_old_02_".
+Items {Items.Cap_03_basic_01, Items.Hard_30_IntBody_Head} have the same appearanceName "h1_cap_03_basic_01_".
+Items {Items.Pants_12_old_03, Items.Hard_20_Intelligence_Legs, Items.Str_30_Cool_Assassin_Legs} have the same appearanceName "l1_pants_12_old_03_".
+Items {Items.Q301_Nomad_WA_OuterTorso, Items.Jacket_12_rich_01} have the same appearanceName "t2_jacket_12_rich_01_".
+Items {Items.CasualShoes_02_basic_01, Items.CasualShoes_02_basic_01_Crafting} have the same appearanceName "s1_casual_02_basic_01_".
+Items {Items.Hard_30_IntBody_Face, Items.Glasses_03_basic_01} have the same appearanceName "f1_glasses_03_basic_01_".
+Items {Items.VHard_50_IntTech_Feet, Items.Boots_12_basic_03} have the same appearanceName "s1_boots_12_basic_03_".
+Items {Items.Pants_17_basic_02, Items.VHard_50_BodyCool_Legs} have the same appearanceName "l1_pants_17_basic_02_".
+Items {Items.LooseShirt_01_rich_02_Crafting, Items.LooseShirt_01_rich_02} have the same appearanceName "t2_shirt_01_rich_02_".
+Items {Items.VHard_50_RefBody_OuterTorso, Items.Vest_21_rich_04} have the same appearanceName "t2_vest_21_rich_04_".
+Items {Items.Glasses_01_basic_03, Items.Glasses_01_basic_03_Crafting, Items.Hard_30_BodyTech_Face, Items.Hard_20_Body_Face, Items.Str_5_Tank_Face, Items.Normal_20_Ranged_Face, Items.Q301_Nomad_MA_Face, Items.Str_10_Tank_Face} have the same appearanceName "f1_glasses_01_basic_03_".
+Items {Items.Jacket_03_basic_01, Items.Weak_30_OuterTorso, Items.Hard_30_IntBody_OuterTorso} have the same appearanceName "t2_jacket_03_basic_01_".
+Items {Items.Pants_04_basic_01_Crafting, Items.Pants_04_basic_01} have the same appearanceName "l1_pants_04_basic_01_".
+Items {Items.Visor_01_basic_05_Crafting, Items.Visor_01_basic_05} have the same appearanceName "f1_glasses_04_basic_05_".
+Items {Items.Proficiency_Boots_11_rich_01_Crafting, Items.Boots_11_rich_01} have the same appearanceName "s1_boots_11_rich_01_".
+Items {Items.Helmet_12_rich_04, Items.VHard_50_IntRef_Head} have the same appearanceName "h1_helmet_12_rich_04_".
+Items {Items.Weak_30_Legs, Items.Pants_06_rich_02} have the same appearanceName "l1_pants_06_rich_02_".
+Items {Items.FormalPants_03_rich_02, Items.FormalPants_03_rich_02_Crafting} have the same appearanceName "l1_formal_03_rich_02_".
+Items {Items.Scarf_01_rich_01_Crafting, Items.Scarf_01_rich_01} have the same appearanceName "h1_scarf_01_rich_01_".
+Items {Items.FormalPants_02_rich_01_Crafting, Items.FormalPants_02_rich_01} have the same appearanceName "l1_formal_02_rich_01_".
+Items {Items.Visor_02_rich_01, Items.Proficiency_Visor_02_rich_01_Crafting} have the same appearanceName "f1_glasses_06_rich_01_".
+Items {Items.Boots_09_rich_01_Crafting, Items.Boots_09_rich_01} have the same appearanceName "s1_boots_09_rich_01_".
+Items {Items.VHard_50_RefBody_Feet, Items.q115_thrusters} have the same appearanceName "s1_thrusters_01_q115_thrusters_".
+Items {Items.Cap_03_rich_02, Items.Cap_03_rich_02_Crafting} have the same appearanceName "h1_cap_03_rich_02_".
+Items {Items.CasualShoes_07_basic_01, Items.Proficiency_CasualShoes_07_basic_01_Crafting} have the same appearanceName "s1_casual_07_basic_01_".
+Items {Items.TShirt_06_basic_02, Items.Q301_Street_WA_InnerTorso} have the same appearanceName "t1_tshirt_06_basic_02_".
+Items {Items.Dress_01_rich_03_Crafting, Items.Dress_01_rich_03} have the same appearanceName "t2_dress_01_rich_03_".
+Items {Items.Mask_02_basic_02, Items.Normal_20_Melee_Face} have the same appearanceName "f1_mask_02_basic_02_".
+Items {Items.Q301_Nomad_MA_Boots, Items.Boots_10_old_01, Items.Q301_Nomad_WA_Boots} have the same appearanceName "s1_boots_10_old_01_".
+Items {Items.TShirt_02_basic_04_Crafting, Items.TShirt_02_basic_04} have the same appearanceName "t1_tshirt_02_basic_04_".
+Items {Items.Visor_01_basic_02, Items.VHard_50_IntTech_Face} have the same appearanceName "f1_glasses_04_basic_02_".
+Items {Items.VHard_50_BodyCool_Feet, Items.Boots_12_rich_01} have the same appearanceName "s1_boots_12_rich_01_".
+Items {Items.SQ031_Samurai_Jacket, Items.q203_samurai_jacket, Items.q204_samurai_jacket, Items.SQ031_Samurai_Jacket_Epic, Items.SQ031_Samurai_Jacket_Legendary} have the same appearanceName "t2_jacket_01_sq031_silverhand_samurai_".
+Items {Items.VHard_50_CoolRef_InnerToso, Items.FormalShirt_02_basic_01} have the same appearanceName "t1_formal_02_basic_01_".
+Items {Items.Story_5_Legs, Items.Pants_06_old_01} have the same appearanceName "l1_pants_06_old_01_".
+Items {Items.Normal_20_Melee_Head, Items.Balaclava_01_basic_02_Crafting, Items.Balaclava_01_basic_02} have the same appearanceName "h1_balaclava_01_basic_02_".
+Items {Items.Pants_01_basic_01, TEST.ItemPass_LegArmor} have the same appearanceName "l1_pants_01_basic_01_".
+Items {Items.Boots_12_basic_04, Items.VHard_50_TechCool_Feet} have the same appearanceName "s1_boots_12_basic_04_".
+Items {Items.Helmet_10_old_01, Items.VHard_50_CoolRef_Head} have the same appearanceName "h1_helmet_10_old_01_".
+Items {Items.Hard_30_Reflex_Head, Items.Helmet_01_basic_01} have the same appearanceName "h1_helmet_01_basic_01_".
+Items {Items.Q301_Street_WA_Face, Items.Tech_02_basic_02, Items.Proficiency_Tech_02_basic_02_Crafting, Items.Q301_Street_MA_Face} have the same appearanceName "f1_tech_02_basic_02_".
+Items {Items.VHard_50_IntTech_InnerToso, Items.TightJumpsuit_01_basic_01} have the same appearanceName "t1_jumpsuit_01_basic_01_".
+Items {Items.GOG_DLC_TShirt_Epic, Items.GOG_DLC_TShirt_Legendary, Items.GOG_DLC_TShirt, Items.GOG_DLC_TShirt_Crafted} have the same appearanceName "t1_tshirt_02_gog_dlc_".
+Items {Items.Str_10_Tank_Legs, Items.Str_5_Tank_Legs, Items.Hard_20_Body_Legs, Items.Pants_07_rich_03, Items.Hard_30_BodyTech_Legs} have the same appearanceName "l1_pants_07_rich_03_".
+Items {Items.Vest_13_rich_04_Crafting, Items.Vest_13_rich_04} have the same appearanceName "t2_vest_13_rich_04_".
+Items {Items.Weak_10_InnerToso, TEST.ItemPass_InnerChestArmor, Items.Avg_10_Int_Netrunner_InnerToso, Items.Shirt_01_basic_01, Items.Story_5_InnerToso, Items.Hard_20_Reflex_InnerToso, Items.Weak_30_InnerToso, Items.Normal_20_Netrunner_InnerToso} have the same appearanceName "t1_shirt_01_basic_01_".
+Items {Items.Jacket_12_rich_02, Items.Q301_Nomad_MA_OuterTorso} have the same appearanceName "t2_jacket_12_rich_02_".
+Items {Items.TShirt_01_rich_02, Items.TShirt_01_rich_02_Crafting} have the same appearanceName "t1_tshirt_01_rich_02_".
+Items {Items.FormalShoes_03_rich_01_Crafting, Items.FormalShoes_03_rich_01} have the same appearanceName "s1_formal_03_rich_01_".
+Items {Items.Q301_Street_MA_OuterTorso, Items.Jacket_01_old_01, Items.Q301_Street_WA_OuterTorso} have the same appearanceName "t2_jacket_01_old_01_".
+Items {Items.mq017_SameraiJacket, Items.MQ017_Samerai_Jacket} have the same appearanceName "t2_jacket_01_mq017_samerai_".
+Items {Items.Jacket_19_basic_04_DLC_Legendary, Items.Jacket_19_basic_04_DLC_Epic, Items.Jacket_19_basic_04_Crafted, Items.Jacket_19_basic_04} have the same appearanceName "t2_jacket_19_basic_04_".
+Items {Items.Shirt_02_old_01, Items.VHard_50_RefBody_InnerToso} have the same appearanceName "t1_shirt_02_old_01_".
+Items {Items.SQ030_MaxTac_Pants, Items.q301_fia_pants, Items.VHard_50_IntTech_Legs} have the same appearanceName "l1_pants_07_sq030_max_tac_".
+Items {Items.Str_30_Cool_Assassin_Face, Items.Hard_20_Intelligence_Face, Items.Glasses_03_basic_08} have the same appearanceName "f1_glasses_03_basic_08_".
+Items {Items.Q301_Nomad_WA_Pants, Items.Pants_09_old_01, Items.Q301_Nomad_MA_Pants} have the same appearanceName "l1_pants_09_old_01_".
+Items {Items.FormalShirt_01_basic_02, Items.Q301_Corpo_WA_InnerTorso, Items.Q301_Corpo_MA_InnerTorso} have the same appearanceName "t1_formal_01_basic_02_".
+Items {Items.Proficiency_Scarf_02_rich_01_Crafting, Items.Scarf_02_rich_01} have the same appearanceName "h1_scarf_02_rich_01_".
+Items {Items.Hard_30_Reflex_InnerToso, Items.TShirt_03_old_03} have the same appearanceName "t1_tshirt_03_old_03_".
+Items {Items.Normal_20_Ranged_InnerToso, Items.Shirt_03_basic_01, Items.Weak_20_Cool_InnerToso} have the same appearanceName "t1_shirt_03_basic_01_".
+Items {Items.Glasses_03_basic_06, Items.Glasses_03_basic_06_Crafting} have the same appearanceName "f1_glasses_03_basic_06_".
+Items {Items.Q005_Johnny_Glasses_Legendary, Items.Q005_Johnny_Glasses_Epic, Items.Q005_Johnny_Glasses} have the same appearanceName "f1_glasses_01_q005_johnny_".
+Items {Items.VHard_50_BodyCool_Face, Items.Glasses_01_basic_04} have the same appearanceName "f1_glasses_01_basic_04_".
+Items {Items.Pants_08_rich_01_Crafting, Items.Pants_08_rich_01} have the same appearanceName "l1_pants_08_rich_01_".
+Items {Items.Hard_30_IntBody_Feet, Items.Hard_30_Reflex_Feet, Items.CasualShoes_02_old_02} have the same appearanceName "s1_casual_02_old_02_".
+Items {Items.Coat_04_rich_02, Items.Coat_04_rich_02_Crafting} have the same appearanceName "t2_coat_04_rich_02_".
+Items {Items.FormalJacket_06_basic_05, Items.VHard_50_CoolRef_OuterTorso} have the same appearanceName "t2_formal_06_basic_05_".
+Items {Items.Tech_02_basic_01_Crafting, Items.Tech_02_basic_01} have the same appearanceName "f1_tech_02_basic_01_".
+Items {Items.Jacket_01_rich_01, Items.Jacket_01_rich_01_Crafting} have the same appearanceName "t2_jacket_01_rich_01_".
+Items {Items.Proficiency_Undershirt_03_basic_03_Crafting, Items.Undershirt_03_basic_03} have the same appearanceName "t1_undershirt_03_basic_03_".
+Items {Items.Hard_20_Intelligence_OuterTorso, Items.Str_30_Cool_Assassin_OuterTorso, Items.Jacket_03_basic_02} have the same appearanceName "t2_jacket_03_basic_02_".
+Items {Items.GOG_DLC_Jacket, Items.GOG_DLC_Jacket_Crafted, Items.GOG_DLC_Jacket_Legendary, Items.GOG_DLC_Jacket_Epic} have the same appearanceName "t2_jacket_18_gog_dlc_".
+Items {Items.Pants_20_basic_03, Items.VHard_50_TechCool_Legs} have the same appearanceName "l1_pants_20_basic_03_".
+Items {Items.Jacket_17_rich_06, Items.Jacket_17_rich_06_Crafting} have the same appearanceName "t2_jacket_17_rich_06_".
+Items {Items.Proficiency_Pants_13_basic_01_Crafting, Items.Pants_13_basic_01} have the same appearanceName "l1_pants_13_basic_01_".
+Items {Items.Boots_07_basic_01, Items.Boots_07_basic_01_Crafting} have the same appearanceName "s1_boots_07_basic_01_".
+Items {Items.Hard_30_BodyTech_Feet, Items.Boots_04_basic_01, Items.Str_5_Tank_Feet, Items.Hard_20_Body_Feet, Items.Str_10_Tank_Feet} have the same appearanceName "s1_boots_04_basic_01_".
+Items {Items.VHard_50_BodyCool_OuterTorso, Items.Vest_21_rich_01} have the same appearanceName "t2_vest_21_rich_01_".
+Items {Items.Boots_02_basic_02, Items.Q301_Corpo_MA_Boots, Items.Q301_Corpo_WA_Boots} have the same appearanceName "s1_boots_02_basic_02_".
+Items {Items.Jumpsuit_01_basic_02, Items.Avg_10_Int_Netrunner_OuterTorso} have the same appearanceName "t2_jumpsuit_01_basic_02_".
+Items {Items.Shirt_03_rich_03, Items.Hard_20_Body_InnerToso, Items.Str_10_Tank_InnerToso, Items.Hard_30_BodyTech_InnerToso, Items.Str_5_Tank_InnerToso} have the same appearanceName "t1_shirt_03_rich_03_".
+Items {Items.Normal_20_Melee_OuterTorso, Items.LooseShirt_02_basic_02} have the same appearanceName "t2_shirt_02_basic_02_".
+Items {Items.LooseShirt_02_rich_01, Items.Proficiency_LooseShirt_02_rich_01_Crafting} have the same appearanceName "t2_shirt_02_rich_01_".
+Items {Items.Jacket_10_basic_01, Items.Weak_20_Cool_OuterTorso} have the same appearanceName "t2_jacket_10_basic_01_".
+Items {Items.Hard_30_Reflex_OuterTorso, Items.Jacket_10_basic_02} have the same appearanceName "t2_jacket_10_basic_02_".
+Items {Items.CasualShoes_01_basic_01_Crafting, Items.CasualShoes_01_basic_01, TEST.ItemPass_FeetArmor} have the same appearanceName "s1_casual_01_basic_01_".
+Items {Items.Mask_02_rich_02, Items.Mask_02_rich_02_Crafting} have the same appearanceName "f1_mask_02_rich_02_".
+Items {Items.Q301_Street_MA_Boots, Items.CasualShoes_06_rich_01} have the same appearanceName "s1_casual_06_rich_01_".
+Items {Items.TShirt_11_old_01, Items.Q301_Street_MA_InnerTorso, Items.Q301_Nomad_MA_InnerTorso} have the same appearanceName "t1_tshirt_11_old_01_".
+Items {Items.FormalShirt_02_basic_03, Items.FormalShirt_02_basic_03_Crafting} have the same appearanceName "t1_formal_02_basic_03_".
+Items {Items.Boots_03_basic_02_Crafting, Items.Boots_03_basic_02} have the same appearanceName "s1_boots_03_basic_02_".
+Items {Items.Mask_03_basic_02, Items.Mask_03_basic_02_Crafting} have the same appearanceName "f1_mask_03_basic_02_".
+Items {Items.Undershirt_02_rich_02_Crafting, Items.Undershirt_02_rich_02} have the same appearanceName "t1_undershirt_02_rich_02_".
+Items {Items.Helmet_09_rich_02, Items.VHard_50_TechCool_Head} have the same appearanceName "h1_helmet_09_rich_02_".
+Items {Items.FormalShoes_01_rich_02, Items.FormalShoes_01_rich_02_Crafting} have the same appearanceName "s1_formal_01_rich_02_".
+Items {Items.FormalSkirt_02_rich_03, Items.FormalSkirt_02_rich_03_Crafting} have the same appearanceName "l1_formal_05_rich_03_".
+Items {Items.Pants_02_basic_01_Crafting, Items.Pants_02_basic_01} have the same appearanceName "l1_pants_02_basic_01_".
+Items {Items.Cap_04_old_02, Items.VHard_50_IntTech_Head} have the same appearanceName "h1_cap_04_old_02_".
+Items {Items.Avg_10_Int_Netrunner_Feet, Items.FormalShoes_02_rich_02} have the same appearanceName "s1_formal_02_rich_02_".
+Items {Items.Normal_20_Melee_InnerToso, Items.TShirt_03_basic_03} have the same appearanceName "t1_tshirt_03_basic_03_".
+Items {Items.Mask_04_rich_04, Items.VHard_50_CoolRef_Face} have the same appearanceName "f1_mask_04_rich_04_".
+Items {Items.Helmet_03_basic_01_Crafting, Items.Helmet_03_basic_01} have the same appearanceName "h1_helmet_03_basic_01_".
+Items {Items.FormalJacket_04_basic_02_Crafting, Items.FormalJacket_04_basic_02} have the same appearanceName "t2_formal_04_basic_02_".
+Items {Items.Undershirt_03_basic_04, Items.Undershirt_03_basic_04_Crafting} have the same appearanceName "t1_undershirt_03_basic_04_".
+Items {Items.Shorts_01_basic_01_Crafting, Items.Shorts_01_basic_01} have the same appearanceName "l1_shorts_01_basic_01_".
+Items {Items.Helmet_11_basic_03, Items.VHard_50_RefBody_Head} have the same appearanceName "h1_helmet_11_basic_03_".
+Items {Items.Proficiency_Helmet_04_basic_02_Crafting, Items.Helmet_04_basic_02} have the same appearanceName "h1_helmet_04_basic_02_".
+Items {Items.Pants_02_rich_01, Items.Hard_30_IntBody_Legs} have the same appearanceName "l1_pants_02_rich_01_".
+Items {Items.Hard_20_Intelligence_Feet, Items.Str_30_Cool_Assassin_Feet, Items.CasualShoes_01_basic_05} have the same appearanceName "s1_casual_01_basic_05_".
+Items {Items.FormalShoes_02_basic_02, Items.Proficiency_FormalShoes_02_basic_02_Crafting} have the same appearanceName "s1_formal_02_basic_02_".
+Items {Items.Hat_02_rich_02_Crafting, Items.Hat_02_rich_02} have the same appearanceName "h1_hat_02_rich_02_".
+Items {Items.Proficiency_Vest_18_basic_01_Crafting, Items.Vest_18_basic_01} have the same appearanceName "t2_vest_18_basic_01_".
+Items {Items.Hard_20_Body_OuterTorso, Items.Str_10_Tank_OuterTorso, Items.Vest_03_basic_01, Items.Str_5_Tank_OuterTorso, Items.Hard_30_BodyTech_OuterTorso} have the same appearanceName "t2_vest_03_basic_01_".
+Items {Items.FormalSkirt_02_rich_01, Items.Proficiency_FormalSkirt_02_rich_01_Crafting} have the same appearanceName "l1_formal_05_rich_01_".
+Items {Items.Weak_20_Cool_Legs, Items.Pants_10_rich_01} have the same appearanceName "l1_pants_10_rich_01_".
+Items {Items.VHard_50_CoolRef_Legs, Items.FormalPants_01_old_01} have the same appearanceName "l1_formal_01_old_01_".
+Items {Items.Q301_Corpo_WA_Pants, Items.FormalPants_02_basic_01} have the same appearanceName "l1_formal_02_basic_01_".
+Items {Items.Q301_Corpo_WA_Face, Items.Glasses_03_basic_05, Items.Q301_Corpo_MA_Face} have the same appearanceName "f1_glasses_03_basic_05_".
+Items {Items.Q301_Nomad_WA_Face, Items.Glasses_01_basic_02} have the same appearanceName "f1_glasses_01_basic_02_".
+Items {Items.Vest_21_basic_02, Items.VHard_50_TechCool_OuterTorso} have the same appearanceName "t2_vest_21_basic_02_".
+Items {Items.Weak_10_Feet, Items.Hard_20_Reflex_Feet, Items.CasualShoes_06_old_02, Items.Q301_Street_WA_Boots, Items.Weak_30_Feet, Items.Normal_20_Netrunner_Feet, Items.Story_5_Feet} have the same appearanceName "s1_casual_06_old_02_".
+Items {Items.Weak_10_OuterTorso, Items.Jacket_01_basic_01, Items.Hard_20_Reflex_OuterTorso, Items.Normal_20_Netrunner_OuterTorso, TEST.ItemPass_OuterChestArmor, Items.Story_5_OuterTorso} have the same appearanceName "t2_jacket_01_basic_01_".
+Items {Items.Pants_03_basic_01, Items.VHard_50_IntRef_Legs} have the same appearanceName "l1_pants_03_basic_01_".
+Items {Items.Hard_20_Reflex_Face, Items.Weak_10_Face, Items.Normal_20_Netrunner_Face, Items.Glasses_01_basic_01, Items.Weak_30_Face, Items.Weak_20_Cool_Face, Items.Story_5_Face} have the same appearanceName "f1_glasses_01_basic_01_".
+Items {Items.Jacket_20_basic_01_DLC_Legendary, Items.Jacket_20_basic_01_Crafted, Items.Jacket_20_basic_01_DLC_Epic, Items.Jacket_20_basic_01} have the same appearanceName "t2_jacket_20_basic_01_".
+Items {Items.Helmet_01_basic_03_Crafting, Items.Helmet_01_basic_03} have the same appearanceName "h1_helmet_01_basic_03_".
+Items {Items.Proficiency_Shorts_02_rich_02_Crafting, Items.Normal_20_Melee_Legs, Items.Hard_30_Reflex_Legs, Items.Shorts_02_rich_02} have the same appearanceName "l1_shorts_02_rich_02_".
+Items {Items.Q005_Johnny_Shoes_Legendary, Items.Q005_Johnny_Shoes, Items.Q005_Johnny_Shoes_Epic} have the same appearanceName "s1_boots_12_q005_johnny_".
+Items {Items.Q005_Johnny_Pants_Epic, Items.Q005_Johnny_Pants, Items.Q005_Johnny_Pants_Legendary} have the same appearanceName "l1_pants_16_q005_johnny_".
+Items {Items.Tech_04_rich_03, Items.VHard_50_IntRef_Face} have the same appearanceName "f1_tech_04_rich_03_".
+Items {Items.VHard_50_IntRef_InnerToso, Items.TightJumpsuit_01_rich_01} have the same appearanceName "t1_jumpsuit_01_rich_01_".
+Items {Items.TShirt_03_rich_03, Items.Proficiency_TShirt_03_rich_03_Crafting} have the same appearanceName "t1_tshirt_03_rich_03_".
+Items {Items.Vest_13_basic_01, Items.Q301_Corpo_MA_OuterTorso, Items.Q301_Corpo_WA_OuterTorso} have the same appearanceName "t2_vest_13_basic_01_".
+Items {Items.TShirt_02_basic_02, Items.Str_30_Cool_Assassin_InnerToso, Items.Hard_20_Intelligence_InnerToso} have the same appearanceName "t1_tshirt_02_basic_02_".
+Items {Items.VHard_50_IntTech_OuterTorso, Items.Coat_04_old_02} have the same appearanceName "t2_coat_04_old_02_".
+Items {Items.Scarf_03_basic_03, Items.Scarf_03_basic_03_Crafting} have the same appearanceName "h1_scarf_03_basic_03_".
+Items {Items.Helmet_03_old_02, Items.Hard_20_Body_Head, Items.Str_5_Tank_Head, Items.Str_10_Tank_Head, Items.Hard_30_BodyTech_Head} have the same appearanceName "h1_helmet_03_old_02_".
+Items {Items.FormalShoes_02_basic_01, Items.VHard_50_CoolRef_Feet} have the same appearanceName "s1_formal_02_basic_01_".
+Items {Items.TightJumpsuit_01_rich_02, Items.Proficiency_TightJumpsuit_01_rich_02_Crafting} have the same appearanceName "t1_jumpsuit_01_rich_02_".
+Items {Items.FormalPants_01_basic_01, Items.Proficiency_FormalPants_01_basic_01_Crafting} have the same appearanceName "l1_formal_01_basic_01_".
+Items {Items.VHard_50_IntRef_OuterTorso, Items.Vest_06_rich_03} have the same appearanceName "t2_vest_06_rich_03_".
+Items {Items.Q001_Pants, Items.Q301_Street_MA_Pants, Items.Q301_Street_WA_Pants} have the same appearanceName "l1_pants_03_q001_start_".
+Items {Items.Visor_02_basic_02_Crafting, Items.Visor_02_basic_02} have the same appearanceName "f1_glasses_06_basic_02_".
+Items {Items.Boots_09_basic_01, Items.VHard_50_IntRef_Feet} have the same appearanceName "s1_boots_09_basic_01_".
+Items {Items.TShirt_05_old_01, Items.VHard_50_BodyCool_InnerToso} have the same appearanceName "t1_tshirt_05_old_01_".
+Items {Items.Shirt_03_basic_02, Items.Shirt_03_basic_02_Crafting} have the same appearanceName "t1_shirt_03_basic_02_".
+Items {Items.GOG_Galaxy_TShirt_Crafted, Items.GOG_Galaxy_TShirt, Items.GOG_Galaxy_TShirt_Legendary, Items.GOG_Galaxy_TShirt_Epic} have the same appearanceName "t1_tshirt_02_gog_galaxy_".
+Items {Items.Hat_01_basic_02, Items.Weak_20_Cool_Head} have the same appearanceName "h1_hat_01_basic_02_".
+Items {Items.Q005_Johnny_Shirt_Epic, Items.Q005_Johnny_Shirt_Legendary, Items.Q005_Johnny_Shirt} have the same appearanceName "t1_tshirt_10_q005_johnny_".
+Items {Items.Normal_20_Ranged_Legs, Items.Pants_04_rich_01} have the same appearanceName "l1_pants_04_rich_01_".
+Items {Items.Normal_20_Netrunner_Legs, Items.Pants_06_rich_01, Items.Avg_10_Int_Netrunner_Legs, Items.Weak_10_Legs, Items.Hard_20_Reflex_Legs} have the same appearanceName "l1_pants_06_rich_01_".
+Items {Items.Normal_20_Ranged_OuterTorso, Items.Vest_04_rich_01} have the same appearanceName "t2_vest_04_rich_01_".
+Items {Items.TShirt_07_old_01, Items.Q301_Nomad_WA_InnerTorso} have the same appearanceName "t1_tshirt_07_old_01_".
+Items {Items.Proficiency_Jacket_06_basic_01_Crafting, Items.Jacket_06_basic_01} have the same appearanceName "t2_jacket_06_basic_01_".
+Items {Items.Hat_03_basic_02, Items.Avg_10_Int_Netrunner_Head, Items.Hat_03_basic_02_Crafting} have the same appearanceName "h1_hat_03_basic_02_".
+Items {Items.Scarf_02_old_02, Items.Str_30_Cool_Assassin_Head, Items.Hard_20_Intelligence_Head} have the same appearanceName "h1_scarf_02_old_02_".
+Items {Items.FormalJacket_02_basic_02_Crafting, Items.FormalJacket_02_basic_02} have the same appearanceName "t2_formal_02_basic_02_".
+Items {Items.Helmet_09_old_01, Items.VHard_50_BodyCool_Head} have the same appearanceName "h1_helmet_09_old_01_".
+Items {Items.Shirt_01_basic_02, Items.Shirt_01_basic_02_Crafting} have the same appearanceName "t1_shirt_01_basic_02_".
+Items {Items.Coat_01_basic_03, Items.Coat_01_basic_03_Crafting} have the same appearanceName "t2_coat_01_basic_03_".
+Items {Items.Pants_13_old_03, Items.VHard_50_RefBody_Legs} have the same appearanceName "l1_pants_13_old_03_".
+Items {Items.Cap_02_basic_01_Crafting, Items.Cap_02_basic_01} have the same appearanceName "h1_cap_02_basic_01_".
+Items {Items.FormalSkirt_01_rich_01, Items.FormalSkirt_01_rich_01_Crafting} have the same appearanceName "l1_formal_04_rich_01_".
+Items {Items.Proficiency_Glasses_05_basic_01_Crafting, Items.Glasses_05_basic_01} have the same appearanceName "f1_glasses_05_basic_01_".
+Items {Items.VHard_50_TechCool_Face, Items.Avg_10_Int_Netrunner_Face_1, Items.Visor_01_basic_01, TEST.ItemPass_FaceArmor} have the same appearanceName "f1_glasses_04_basic_01_".
+Items {Items.SQ030_MaxTac_Chest, Items.q301_fia_chest} have the same appearanceName "t2_vest_01_sq030_max_tac_".
+Items {Items.Proficiency_Cap_06_basic_01_Crafting, Items.Cap_06_basic_01} have the same appearanceName "h1_cap_06_basic_01_".
+Items {Items.FormalShirt_01_rich_06, Items.FormalShirt_01_rich_06_Crafting} have the same appearanceName "t1_formal_01_rich_06_".
+Items {Items.Jumpsuit_02_rich_03, Items.Proficiency_Jumpsuit_02_rich_03_Crafting} have the same appearanceName "t2_jumpsuit_02_rich_03_".

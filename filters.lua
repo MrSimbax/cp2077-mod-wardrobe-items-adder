@@ -2,19 +2,18 @@ local Utils = require("utils")
 
 local Filters = {}
 
-function Filters.hasDisplayName (tweakDBID)
-    local locKey = TweakDB:GetFlat(tweakDBID..".displayName")
+function Filters.hasDisplayName (tweakDbid)
+    local locKey = TweakDB:GetFlat(tweakDbid..".displayName")
     return locKey ~= nil and locKey.hash ~= 0
 end
 
-function Filters.hasAppearanceName (tweakDBID)
-    local cname = TweakDB:GetFlat(tweakDBID..".appearanceName")
-    return cname ~= nil and (cname.hash_hi ~= 0 or cname.hash_lo ~= 0)
+function Filters.hasAppearanceName (tweakDbid)
+    return Utils.isValidCname(TweakDB:GetFlat(tweakDbid..".appearanceName"))
 end
 
-function Filters.isCraftingSpec (tweakDBID)
-    local path = Utils.TdbidToString(tweakDBID)
-    return TDBID.IsValid(TweakDB:GetFlat(tweakDBID..".CraftingData")) or
+function Filters.isCraftingSpec (tweakDbid)
+    local path = tweakDbid.value
+    return TDBID.IsValid(TweakDB:GetFlat(tweakDbid..".CraftingData")) or
         -- Note: in patch 2.0 they removed stats from clothes, and removed .CraftingData field,
         -- as I guess there's no point in crafting clothes now.
         -- However, I have not found a way to automatically detect if the item was a crafting spec...
@@ -35,15 +34,20 @@ function Filters.isClothingItem (itemId)
     return RPGManager.GetItemCategory(itemId) == gamedataItemCategory.Clothing
 end
 
-function Filters.doesItemExist (tweakDBID)
-    return TweakDB:GetRecord(tweakDBID) ~= nil
+function Filters.doesItemExist (tweakDbid)
+    return TweakDB:GetRecord(tweakDbid) ~= nil
 end
 
-function Filters.isLifepathDuplicate (tweakDBID)
-    local path = Utils.TdbidToString(tweakDBID)
+function Filters.isLifepathDuplicate (tweakDbid)
+    local path = tweakDbid.value
     return string.match(path, "^Items%.[qQ]301_Corpo_[MW]A_.*$") or
         string.match(path, "^Items%.[qQ]301_Nomad_[MW]A_.*$") or
         string.match(path, "^Items%.[qQ]301_Street_[MW]A_.*$")
+end
+
+function Filters.isOnInternalBlacklist (itemId)
+    local wardrobeSystem = Game.GetWardrobeSystem()
+    return wardrobeSystem and wardrobeSystem:IsItemBlacklisted(itemId)
 end
 
 -- condition is a function with parameters (itemId) returning a bool
@@ -56,15 +60,13 @@ function Filters.makeFilter (condition, configKey, failureMessage)
     }
 end
 
--- Returns `function (itemId)` which returns the result from filter which is `function (tweakDBID)`
-function Filters.tweakDbidToItemIdFilter (filter)
+function Filters.changeInputFromTweakDbidToItemId (filter)
     return function (itemId)
         return filter(ItemID.GetTDBID(itemId))
     end
 end
 
--- Returns `function (itemId)` which returns `not filter(itemId)`
-function Filters.notFilter (filter)
+function Filters.negate (filter)
     return function (itemId)
         return not filter(itemId)
     end

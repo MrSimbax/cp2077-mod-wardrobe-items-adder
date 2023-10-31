@@ -5,10 +5,6 @@ local Ui = {}
 
 local INFINITY = 2^15
 
-local function red ()
-    return 1, 0, 0, 1
-end
-
 local function gray ()
     return 0.5, 0.5, 0.5, 1.0
 end
@@ -18,9 +14,9 @@ local function textToListOfClothes (clothes)
     clothes = Utils.split(clothes, "\r\n")
     local ret = {}
     for _, cloth in ipairs(clothes) do
-        local tweakDBID = cloth:match("Items%.([_%w]+)") or cloth:match("[_%w]+")
-        if tweakDBID then
-            table.insert(ret, "Items."..tweakDBID)
+        local tweakDbid = cloth:match("Items%.([_%w]+)") or cloth:match("[_%w]+")
+        if tweakDbid then
+            table.insert(ret, "Items."..tweakDbid)
         end
     end
     return ret

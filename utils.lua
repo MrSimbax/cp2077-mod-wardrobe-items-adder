@@ -72,18 +72,15 @@ function Utils.serialize (file, object, indent)
 end
 
 -- Because TDBID.ToStringDEBUG() and tostring() seem unreliable and may result in a different hash than print()
-function Utils.TdbidToString (tdbid)
-    if type(tdbid) == "string" then
-        tdbid = TweakDBID.new(tdbid)
-    end
-    return tdbid.value
-end
-
 function Utils.TdbidToDebugString (tdbid)
     if type(tdbid) == "string" then
         tdbid = TweakDBID.new(tdbid)
     end
     return string.format("<TDBID:%X:%X>", tdbid.hash, tdbid.length)
+end
+
+function Utils.isValidCname (cname)
+    return cname ~= nil and (cname.hash_hi ~= 0 or cname.hash_lo ~= 0)
 end
 
 return Utils

@@ -7,10 +7,24 @@ local defaultConfig = require("default_config")
 
 local Mod = {}
 
+local ErrorID =
+{
+    invalidTweakDbid = 0,
+    wardrobeSystemUnavailable = 1,
+    invalidItemId = 2,
+    failedFilter = 3,
+    itemAlreadyInWardrobe = 4,
+    unknownReason = 5
+}
+
+local function makeErrorObject (id, message)
+    return {id = id, message = message}
+end
+
 function Mod:loadConfig ()
     local configChunk, errorMessage = loadfile("config.lua", "t", {})
     if not configChunk then
-        Logger:warn("Could not load configuration file: %s", errorMessage)
+        Logger:warn("Could not load the configuration file: %s", errorMessage)
         return Mod:loadDefaultConfig()
     end
     return Mod:runConfig(configChunk)
@@ -72,7 +86,7 @@ function Mod:saveConfig ()
     end
     local file, errorMessage = io.open("config.lua", "w")
     if not file then
-        Logger:error("Could not save current configuration: %s", errorMessage)
+        Logger:error("Could not save the current configuration: %s", errorMessage)
         return false, errorMessage
     end
     file:write("return ")
@@ -81,64 +95,96 @@ function Mod:saveConfig ()
     return true
 end
 
-function Mod:addClothToWardrobe (itemTid)
-    if not TDBID.IsValid(itemTid) then
-        return false, "not valid TweakDBID"
+function Mod:doesItemPassFilters (itemId)
+    for _, filter in ipairs(self.filters) do
+        if self.config.isFilterEnabled[filter.configKey] and not filter.condition(itemId) then
+            return false, makeErrorObject(ErrorID.failedFilter, filter.failureMessage)
+        end
+    end
+    return true
+end
+
+function Mod:addClothToWardrobe (itemTweakDbid)
+    if not TDBID.IsValid(itemTweakDbid) then
+        return false, makeErrorObject(ErrorID.invalidTweakDbid, "invalid TweakDBID")
     end
 
     local wardrobeSystem = Game.GetWardrobeSystem()
     if not wardrobeSystem then
-        return false, "wardrobe system is unavailable"
+        return false, makeErrorObject(ErrorID.wardrobeSystemUnavailable, "the wardrobe system is unavailable")
     end
 
-    local itemId = ItemID.new(itemTid)
+    local itemId = ItemID.new(itemTweakDbid)
     if not ItemID.IsValid(itemId) then
-        return false, "not valid ItemID"
+        return false, makeErrorObject(ErrorID.invalidItemId, "invalid ItemID")
     end
 
-    for _, filter in ipairs(self.filters) do
-        if self.config.isFilterEnabled[filter.configKey] and not filter.condition(itemId) then
-            return false, filter.failureMessage
-        end
+    local storedItemId = wardrobeSystem:GetStoredItemID(itemTweakDbid)
+    if ItemID.IsValid(storedItemId) then
+        local storedItemPath = storedItemId.id.value
+        return false, makeErrorObject(ErrorID.itemAlreadyInWardrobe, string.format("item or its duplicate (\"%s\") is already in the wardrobe", storedItemPath))
     end
 
-    if self.config.isFilterEnabled.mustNotBeOnInternalBlacklist and wardrobeSystem:IsItemBlacklisted(itemId) then
-        return false, "item is on wardrobe system's blacklist"
-    end
-
-    local uniqueItemId = wardrobeSystem:GetStoredItemID(itemTid)
-    if ItemID.IsValid(uniqueItemId) then
-        local uniqueTdbid = Utils.TdbidToString(uniqueItemId.id)
-        if not self.duplicates[uniqueTdbid] then
-            self.duplicates[uniqueTdbid] = {[Utils.TdbidToString(itemTid)] = true}
-        else
-            self.duplicates[uniqueTdbid][Utils.TdbidToString(itemTid)] =  true
-        end
-        return false, string.format("item or its duplicate (\"%s\") is already in the wardrobe", Utils.TdbidToString(uniqueTdbid))
-    end
-
-    local success = wardrobeSystem:StoreUniqueItemID(itemId)
+    local success, errorObject = self:doesItemPassFilters(itemId)
     if not success then
-        return false, "storing item in the wardrobe unsuccessful, reason unknown"
+        return success, errorObject
     end
 
-    -- Not sure what it does but apparently this cannot fail after successful StoreUniqueItemId()
-    WardrobeSystem.SendWardrobeAddItemRequest(itemId)
+    success = wardrobeSystem:StoreUniqueItemID(itemId)
+    if not success then
+        return false, makeErrorObject(ErrorID.unknownReason, "storing item in the wardrobe unsuccessful, reason unknown")
+    end
 
-    uniqueItemId = wardrobeSystem:GetStoredItemID(itemTid)
-    self.duplicates[Utils.TdbidToString(uniqueItemId.id)] = {[Utils.TdbidToString(itemTid)] = true}
+    WardrobeSystem.SendWardrobeAddItemRequest(itemId)
 
     return true
 end
 
+function Mod:findEquivalentItems (itemTweakDbid)
+    local itemPath = itemTweakDbid.value
+    local appearanceName = TweakDB:GetFlat(itemPath..".appearanceName")
+    if not Utils.isValidCname(appearanceName) then
+        return {}
+    end
+    appearanceName = appearanceName.value
+
+    local equivalentItemPaths = {}
+    for _, equivalentItemPath in ipairs(self.appearances[appearanceName] or {}) do
+        if equivalentItemPath ~= itemPath then
+            table.insert(equivalentItemPaths, equivalentItemPath)
+        end
+    end
+    return equivalentItemPaths
+end
+
+function Mod:addEquivalentClothesToWardrobe (itemTweakDbid)
+    local equivalentItemPaths = self:findEquivalentItems(itemTweakDbid)
+    for _, equivalentItemPath in ipairs(equivalentItemPaths) do
+        Logger:debug("\tAdding item with the same appearance: \"%s\".", equivalentItemPath)
+        local success, errorObject = self:addClothToWardrobe(TweakDBID.new(equivalentItemPath))
+        if success then
+            return equivalentItemPath
+        else
+            Logger:debug("\t\tItem \"%s\" was not added to the wardrobe: %s.", equivalentItemPath, errorObject.message)
+        end
+    end
+    return nil
+end
+
 -- Adds clothes from a user-specified list of items
-function Mod:addClothesToWardrobe (clothes)
-    for _, path in ipairs(clothes) do
-        Logger:info("Adding item \"%s\" to wardrobe.", path)
-        local tweakDBID = TweakDBID.new(path)
-        local success, errorMessage = self:addClothToWardrobe(tweakDBID)
+function Mod:addClothesToWardrobe (paths)
+    for _, path in ipairs(paths) do
+        Logger:info("Adding item \"%s\" to the wardrobe.", path)
+        local tweakDbid = TweakDBID.new(path)
+        local success, errorObject = self:addClothToWardrobe(tweakDbid)
         if not success then
-            Logger:warn("Item \"%s\" was not added to the wardrobe: %s.", path, errorMessage)
+            Logger:warn("Item \"%s\" was not added to the wardrobe: %s.", path, errorObject.message)
+            if errorObject.id == ErrorID.failedFilter then
+                local equivalentItem = self:addEquivalentClothesToWardrobe(tweakDbid)
+                if equivalentItem then
+                    Logger:warn("Added item \"%s\" instead, which has the same appearance.", equivalentItem)
+                end
+            end
         end
     end
 end
@@ -147,14 +193,12 @@ end
 function Mod:addAllClothesToWardrobe ()
     local clothingRecords = TweakDB:GetRecords("gamedataClothing_Record")
     for _, itemRecord in ipairs(clothingRecords) do
-        local tweakDBID = itemRecord:GetID()
-        local success, errorMessage = self:addClothToWardrobe(tweakDBID)
+        local tweakDbid = itemRecord:GetID()
+        local success, errorObject = self:addClothToWardrobe(tweakDbid)
         if not success then
-            -- Note: path cannot be retrieved from TDBID as it is some kind of hash
-            Logger:debug("Item \"%s\" was not added to wardrobe: %s.", Utils.TdbidToString(tweakDBID), errorMessage)
+            Logger:debug("Item \"%s\" was not added to the wardrobe: %s.", tweakDbid.value, errorObject.message)
         end
     end
-    self:printDuplicates()
 end
 
 -- Remove all clothing items which are stored in the wardrobe system
@@ -165,27 +209,13 @@ function Mod:removeAllClothesFromWardrobe ()
     end
 
     local itemIds = wardrobeSystem:GetStoredItemIDs()
-     for _,itemId in pairs(itemIds) do
+    for _,itemId in pairs(itemIds) do
         wardrobeSystem:ForgetItemID(itemId)
     end
-    Logger:debug("Removed all clothes from wardrobe system.")
 end
 
-function Mod:printDuplicates ()
-    for uniqueTdbid, tdbids in pairs(self.duplicates) do
-        local hasDuplicates = (next(tdbids, next(tdbids)) ~= nil)
-        if hasDuplicates then
-            local tdbidsAsStrings = {}
-            for tdbid, _ in pairs(tdbids) do
-                table.insert(tdbidsAsStrings, string.format("%q", tdbid))
-            end
-            Logger:debug("Items {%s} have the same unique item ID \"%s\".", table.concat(tdbidsAsStrings, ", "), uniqueTdbid)
-        end
-    end
-end
-
-function Mod:isBlacklistedByMod (tweakDBID)
-    return self.blacklistSet[Utils.TdbidToString(tweakDBID)]
+function Mod:isBlacklistedByMod (tweakDbid)
+    return self.blacklistSet[tweakDbid.value]
 end
 
 function Mod:showUi ()
@@ -198,9 +228,9 @@ end
 function Mod:updateBlacklistSet ()
     self.blacklistSet = {}
     for _, path in ipairs(self.config.blacklist) do
-        local tweakDBID = TweakDBID.new(path)
-        if not TDBID.IsValid(tweakDBID) then
-            Logger:warn("path %s is not a valid TweakDBID, skipping from blacklist")
+        local tweakDbid = TweakDBID.new(path)
+        if not TDBID.IsValid(tweakDbid) then
+            Logger:warn("path %s is not a valid TweakDBID, skipping from blacklist", path)
             goto continue
         end
         self.blacklistSet[path] = true
@@ -220,9 +250,44 @@ function Mod:isItemRemovalEnabled ()
     return self.canForgetItems
 end
 
+local function buildAppearances ()
+    local appearances = {}
+    local clothingRecords = TweakDB:GetRecords("gamedataClothing_Record")
+    for _, itemRecord in ipairs(clothingRecords) do
+        local tweakDbid = itemRecord:GetID()
+        local appearanceName = TweakDB:GetFlat(tweakDbid..".appearanceName")
+        if Utils.isValidCname(appearanceName) then
+            appearanceName = appearanceName.value
+            if appearances[appearanceName] then
+                table.insert(appearances[appearanceName], tweakDbid.value)
+            else
+                appearances[appearanceName] = {tweakDbid.value}
+            end
+        end
+    end
+    return appearances
+end
+
+function Mod:verifyAppearances()
+    for appearanceName, paths in pairs(self.appearances) do
+        local hasDuplicates = (#paths > 1)
+        if hasDuplicates then
+            local passingItems = {}
+            for _, path in ipairs(paths) do
+                if self:doesItemPassFilters(ItemID.FromTDBID(path)) then
+                    table.insert(passingItems, path)
+                end
+            end
+            if #passingItems > 1 then
+                Logger:debug("Items {%s} have the same appearanceName \"%s\" but multiple of them pass through the filters."..
+                             " Some of them might be broken.", table.concat(passingItems, ", "), appearanceName)
+            end
+        end
+    end
+end
+
 function Mod:new ()
     self.initialized = false
-    self.duplicates = {}
     self.canForgetItems = nil
 
     registerForEvent("onInit", function ()
@@ -232,16 +297,18 @@ function Mod:new ()
         end
 
         self.filters = {
-            Filters.makeFilter(Filters.tweakDbidToItemIdFilter(Filters.doesItemExist), "mustExist", "item does not exist"),
+            Filters.makeFilter(Filters.changeInputFromTweakDbidToItemId(Filters.doesItemExist), "mustExist", "item does not exist"),
             Filters.makeFilter(Filters.isClothingItem, "mustHaveClothingCategory", "item does not have the Clothing category"),
-            Filters.makeFilter(Filters.tweakDbidToItemIdFilter(Filters.hasDisplayName), "mustHaveDisplayName", "item does not have displayName"),
-            Filters.makeFilter(Filters.tweakDbidToItemIdFilter(Filters.hasAppearanceName), "mustHaveAppearanceName", "item does not have appearanceName"),
-            Filters.makeFilter(Filters.notFilter(Filters.tweakDbidToItemIdFilter(Filters.isCraftingSpec)), "mustNotBeCraftingSpec", "item is/was probably a crafting spec"),
-            Filters.makeFilter(Filters.notFilter(Filters.tweakDbidToItemIdFilter(Filters.isLifepathDuplicate)), "mustNotBeLifepathDuplicate", "item is probably a duplicate of a lifepath item"),
-            Filters.makeFilter(Filters.notFilter(Filters.tweakDbidToItemIdFilter(function (tweakDBID)
-                return self:isBlacklistedByMod(tweakDBID)
-            end)), "mustNotBeOnBlacklist", "item is blacklisted by the mod")
+            Filters.makeFilter(Filters.changeInputFromTweakDbidToItemId(Filters.hasDisplayName), "mustHaveDisplayName", "item does not have displayName"),
+            Filters.makeFilter(Filters.changeInputFromTweakDbidToItemId(Filters.hasAppearanceName), "mustHaveAppearanceName", "item does not have appearanceName"),
+            Filters.makeFilter(Filters.negate(Filters.changeInputFromTweakDbidToItemId(Filters.isCraftingSpec)), "mustNotBeCraftingSpec", "item is/was probably a crafting spec"),
+            Filters.makeFilter(Filters.negate(Filters.changeInputFromTweakDbidToItemId(Filters.isLifepathDuplicate)), "mustNotBeLifepathDuplicate", "item is probably a duplicate of a lifepath item"),
+            Filters.makeFilter(Filters.negate(Filters.changeInputFromTweakDbidToItemId(function (tweakDbid) return self:isBlacklistedByMod(tweakDbid) end)), "mustNotBeOnBlacklist", "item is blacklisted by the mod"),
+            Filters.makeFilter(Filters.negate(Filters.isOnInternalBlacklist), "mustNotBeOnInternalBlacklist", "item is on the wardrobe system's blacklist")
         }
+
+        self.appearances = buildAppearances()
+        self:verifyAppearances()
 
         if self:isItemRemovalEnabled() then
             Override('WardrobeSystem','GetFilteredInventoryItemsData', function(wardrobeSystem, equipmentArea)
