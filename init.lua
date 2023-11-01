@@ -1,4 +1,4 @@
--- Wardrobe Items Adder v1.4.0
+-- Wardrobe Items Adder v2.0.0
 local Logger = require("logger"):init(1, '[WardrobeItemsAdder] ')
 local Filters = require("filters")
 local Ui = require("ui")

@@ -1,4 +1,4 @@
-version="1.4.0"
+version="2.0.0"
 current=`pwd`
 path="bin/x64/plugins/cyber_engine_tweaks/mods/wardrobe_items_adder"
 package_name="wardrobe_items_adder_v${version}"
