@@ -14,7 +14,8 @@ local ErrorID =
     invalidItemId = 2,
     failedFilter = 3,
     itemAlreadyInWardrobe = 4,
-    unknownReason = 5
+    unknownReason = 5,
+    itemNotInWardrobe = 6
 }
 
 local function makeErrorObject (id, message)
@@ -171,6 +172,34 @@ function Mod:addEquivalentClothesToWardrobe (itemTweakDbid)
     return nil
 end
 
+function Mod:removeClothFromWardrobe (itemTweakDbid)
+    if not TDBID.IsValid(itemTweakDbid) then
+        return false, makeErrorObject(ErrorID.invalidTweakDbid, "invalid TweakDBID")
+    end
+
+    local wardrobeSystem = Game.GetWardrobeSystem()
+    if not wardrobeSystem then
+        return false, makeErrorObject(ErrorID.wardrobeSystemUnavailable, "the wardrobe system is unavailable")
+    end
+
+    local itemId = ItemID.new(itemTweakDbid)
+    if not ItemID.IsValid(itemId) then
+        return false, makeErrorObject(ErrorID.invalidItemId, "invalid ItemID")
+    end
+
+    local storedItemId = wardrobeSystem:GetStoredItemID(itemTweakDbid)
+    if not ItemID.IsValid(storedItemId) then
+        return false, makeErrorObject(ErrorID.itemNotInWardrobe, "neither the item nor its duplicate is in the wardrobe")
+    end
+
+    local success = wardrobeSystem:ForgetItemID(storedItemId)
+    if not success then
+        return false, makeErrorObject(ErrorID.unknownReason, "removing item from the wardrobe unsuccessful, reason unknown")
+    end
+
+    return true
+end
+
 -- Adds clothes from a user-specified list of items
 function Mod:addClothesToWardrobe (paths)
     for _, path in ipairs(paths) do
@@ -185,6 +214,17 @@ function Mod:addClothesToWardrobe (paths)
                     Logger:warn("Added item \"%s\" instead, which has the same appearance.", equivalentItem)
                 end
             end
+        end
+    end
+end
+
+function Mod:removeClothesFromWardrobe (paths)
+    for _, path in ipairs(paths) do
+        Logger:info("Removing item \"%s\" to the wardrobe.", path)
+        local tweakDbid = TweakDBID.new(path)
+        local success, errorObject = self:removeClothFromWardrobe(tweakDbid)
+        if not success then
+            Logger:warn("Item \"%s\" was not removed from the wardrobe: %s.", path, errorObject.message)
         end
     end
 end

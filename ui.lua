@@ -66,11 +66,11 @@ end
 
 function Ui:setWindowSize()
     local defaultWidth = Ui:textWidth(45)
-    local defaultHeight = ImGui.GetTextLineHeight() * 26
+    local defaultHeight = ImGui.GetTextLineHeight() * 32
     ImGui.SetNextWindowSize(defaultWidth, defaultHeight, ImGuiCond_FirstUseEver)
 
     local minWidth = Ui:textWidth(35)
-    local minHeight = ImGui.GetTextLineHeight() * 20
+    local minHeight = ImGui.GetTextLineHeight() * 26
     ImGui.SetNextWindowSizeConstraints(minWidth, minHeight, INFINITY, INFINITY)
 end
 
@@ -85,7 +85,7 @@ function Ui:onDraw ()
     if ImGui.Begin("Wardrobe Items Adder") then
         Ui:updateWindowSize()
         if ImGui.BeginTabBar("##tabBar") then
-            if ImGui.BeginTabItem("Adder") then
+            if ImGui.BeginTabItem("Main") then
                 Ui:drawMainTab()
                 ImGui.EndTabItem()
             end
@@ -106,25 +106,32 @@ function Ui:onDraw ()
 end
 
 function Ui:drawMainTab ()
+    Ui:drawSectionDescription("Add/Remove All Clothes", "")
+
     if ImGui.Button("Add All Clothes", self.winContentWidth, 0) then
         self.wardrobeItemsAdder:addAllClothesToWardrobe()
         Logger:info("Added all clothes to wardrobe.")
     end
 
     local isItemRemovalDisabled = not self.wardrobeItemsAdder:isItemRemovalEnabled()
+
+    local function setRemovalDisabledTooltip ()
+        if isItemRemovalDisabled and ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled) then
+            ImGui.SetTooltip("\"Codeware\" mod must be installed to enable item removal.")
+        end
+    end
+
     ImGui.BeginDisabled(isItemRemovalDisabled)
     if ImGui.Button("Remove All Clothes", self.winContentWidth, 0) then
         self.wardrobeItemsAdder:removeAllClothesFromWardrobe()
         Logger:info("Removed all clothes from wardrobe.")
     end
-    if isItemRemovalDisabled and ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled) then
-        ImGui.SetTooltip("\"Codeware\" mod must be installed to enable item removal.")
-    end
+    setRemovalDisabledTooltip()
     ImGui.EndDisabled()
 
     Ui:drawSeparatorWithSpacing()
 
-    Ui:drawSectionDescription("Add Specific Clothes",
+    Ui:drawSectionDescription("Add/Remove Specific Clothes",
 "Each line should contain at most one item ID, "..
 "with or without the \"Items.\" prefix. "..
 "For convenience, Game.AddToInventory(...) "..
@@ -132,7 +139,7 @@ function Ui:drawMainTab ()
 
     local _, availableHeight = ImGui.GetContentRegionAvail()
     local buttonSize = ImGui.GetTextLineHeight() * 2
-    local clothesTextHeight = availableHeight - buttonSize
+    local clothesTextHeight = availableHeight - 2 * buttonSize
     self.clothesText =
         ImGui.InputTextMultiline(
             "##specificClothesInput",
@@ -141,14 +148,24 @@ function Ui:drawMainTab ()
             self.winContentWidth,
             clothesTextHeight)
     ImGui.Spacing()
-    if ImGui.Button("Add Listed Items", self.winContentWidth, 0) then
-        self.wardrobeItemsAdder:addClothesToWardrobe(textToListOfClothes(self.clothesText))
+    local function rememberLastItems ()
         local config = self.wardrobeItemsAdder.config
         if config.rememberLastAddedItems then
             config.lastAddedItems = self.clothesText
             self.wardrobeItemsAdder:saveConfig()
         end
     end
+    if ImGui.Button("Add Listed Items", self.winContentWidth, 0) then
+        self.wardrobeItemsAdder:addClothesToWardrobe(textToListOfClothes(self.clothesText))
+        rememberLastItems()
+    end
+    ImGui.BeginDisabled(isItemRemovalDisabled)
+    if ImGui.Button("Remove Listed Items", self.winContentWidth, 0) then
+        self.wardrobeItemsAdder:removeClothesFromWardrobe(textToListOfClothes(self.clothesText))
+        rememberLastItems()
+    end
+    setRemovalDisabledTooltip()
+    ImGui.EndDisabled()
 end
 
 function Ui:drawConfigCheckbox (label, config, configKey, tooltip)
@@ -164,10 +181,12 @@ end
 
 function Ui:drawSectionDescription (title, description)
     ImGui.Text(title)
-    ImGui.PushStyleColor(ImGuiCol.Text, gray())
-    ImGui.TextWrapped(description)
-    ImGui.PopStyleColor()
-    ImGui.Spacing()
+    if description and #description > 0 then
+        ImGui.PushStyleColor(ImGuiCol.Text, gray())
+        ImGui.TextWrapped(description)
+        ImGui.PopStyleColor()
+        ImGui.Spacing()
+    end
 end
 
 function Ui:drawSettings ()
