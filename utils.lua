@@ -80,7 +80,7 @@ function Utils.TdbidToDebugString (tdbid)
 end
 
 function Utils.isValidCname (cname)
-    return cname ~= nil and (cname.hash_hi ~= 0 or cname.hash_lo ~= 0)
+    return cname ~= nil and type(cname) == "table" and (cname.hash_hi ~= 0 or cname.hash_lo ~= 0)
 end
 
 return Utils
