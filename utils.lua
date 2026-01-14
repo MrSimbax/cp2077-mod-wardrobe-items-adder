@@ -2,7 +2,7 @@ local Utils = {}
 
 function Utils.split (str, delim)
     delim = delim or "%s"
-    local pat = string.format("[^%s]*", delim)
+    local pat = "[^" .. delim .. "]+"
     local t = {}
     for word in str:gmatch(pat) do
         t[#t + 1] = word
