@@ -18,7 +18,7 @@ return {
     },
     blacklistModifiedByUser = false,
     addAllClothesOnPlayerSpawn = false,
-    logLevel = 2,
+    logLevel = 1,
     isFilterEnabled = {
         mustExist = true,
         mustNotBeOnInternalBlacklist = true,

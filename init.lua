@@ -296,6 +296,7 @@ local function buildAppearances ()
     for _, itemRecord in ipairs(clothingRecords) do
         local tweakDbid = itemRecord:GetID()
         local appearanceName = TweakDB:GetFlat(tweakDbid..".appearanceName")
+        Logger:debug("tweakDbid = %q; appearanceName = %q", tweakDbid, appearanceName)
         if Utils.isValidCname(appearanceName) then
             appearanceName = appearanceName.value
             if appearances[appearanceName] then
