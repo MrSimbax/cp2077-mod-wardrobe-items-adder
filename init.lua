@@ -33,7 +33,7 @@ end
 
 function Mod:loadDefaultConfig ()
     Logger:info("Loading the default configuration")
-    configChunk, errorMessage = loadfile("default_config.lua", "t", {})
+    local configChunk, errorMessage = loadfile("default_config.lua", "t", {})
     if not configChunk then
         Logger:error("Could not load the default configuration: %s", errorMessage)
         return false
