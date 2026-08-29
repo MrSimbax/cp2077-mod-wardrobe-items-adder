@@ -22,7 +22,7 @@ local function textToListOfClothes (clothes)
     clothes = splitByLine(clothes)
     local ret = {}
     for _, cloth in ipairs(clothes) do
-        local tweakDbid = cloth:match("Items%.([_%w]+)") or cloth:match("[_%w]+")
+        local tweakDbid = cloth:match("Items%.([-_%w]+)") or cloth:match("[-_%w]+")
         if tweakDbid then
             table.insert(ret, "Items."..tweakDbid)
         end
