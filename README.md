@@ -11,7 +11,7 @@ Add/remove all or only specific clothes to/from the wardrobe without cluttering 
   * This approach has a risk of adding broken clothes, but the mod attempts to filter them out
   * In case you want to turn the filters off, there is an option for that too, although not recommended
 * Ability to add only specific clothes to the wardrobe by providing a list of item IDs or `Game.AddToInventory(...)` commands
-* Ability to remove all/specific clothes from the wardrobe (thanks to @[SweetHansel](https://github.com/SweetHansel))
+* Ability to remove all/specific clothes from the wardrobe (thanks to @[AnugrahHu](https://github.com/AnugrahHu))
 * Simple UI in the [Cyber Engine Tweaks](https://www.nexusmods.com/cyberpunk2077/mods/107) overlay
 * Install-and-forget option to automatically add all clothes when the player spawns
 
@@ -59,3 +59,9 @@ Game.GetWardrobeSystem():StoreUniqueItemIDAndMarkNew(ItemID.FromTDBID("ITEM_ID_H
 ```
 
 The base game doesn't allow to remove items from the wardrobe, for that you need [Codeware](https://github.com/psiberx/cp2077-codeware/wiki#managing-wardrobe).
+
+## Contributors
+
+* [MrSimbax](https://github.com/MrSimbax) (initial author, maintainer)
+* [AnugrahHu](https://github.com/AnugrahHu)
+* [Birabuto](https://github.com/DevMaxiss)
